@@ -24,4 +24,8 @@ public class RegisterDTO {
     @NotEmpty(message = "请输入电子邮箱")
     @Email(message = "邮箱格式不正确")
     private String email;
+
+    @NotEmpty(message = "请输入手机号")
+    @Length(min = 11, max = 11, message = "号码格式不对")
+    private String mobile;
 }

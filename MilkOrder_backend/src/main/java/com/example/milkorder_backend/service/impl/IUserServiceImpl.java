@@ -34,6 +34,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
         User addUser = User.builder()
                 .username(dto.getName())
                 .password(MD5Utils.getPwd(dto.getPass()))
+                .mobile(dto.getMobile())
                 .email(dto.getEmail())
                 .createTime(new Date())
                 .status(true)
