@@ -24,13 +24,20 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
     // 1. 用户注册
     @Override
     public User executeRegister(RegisterDTO dto) {
-        //查询是否有相同用户名的用户
+        /**
+         * 查询是否有相同用户名的用户
+         */
+        // 创建一个查询对象 wrapper，对应的的实体为 User
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUsername, dto.getName()).or().eq(User::getEmail, dto.getEmail());  // 账号已存在或邮箱已存在
+        // 将wrapper的username和email字段分别设为dto中传入的数据
+        wrapper.eq(User::getUsername, dto.getName()).or().eq(User::getEmail, dto.getEmail());
+        // 用wrapper中的值匹配一个实体User对象
         User User = baseMapper.selectOne(wrapper);
         if (!ObjectUtils.isEmpty(User)) {
+            // 匹配成功说明已存在
             ApiAsserts.fail("账号或邮箱已存在！");
         }
+        // 否者，创建一个新增对象addUser依次设置字段值，然后插入表单
         User addUser = User.builder()
                 .username(dto.getName())
                 .password(MD5Utils.getPwd(dto.getPass()))
@@ -47,6 +54,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
     // 2. 通过用户名获取用户
     @Override
     public User getUserByUsername(String username) {
+        // 同上
         return baseMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 
@@ -55,8 +63,8 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
     public String executeLogin(LoginDTO dto) {
         String token = null;
         try {
-            User user = getUserByUsername(dto.getUsername());  // 获取输入的用户名
-            String encodePwd = MD5Utils.getPwd(dto.getPassword());  // 获取输入的密码并MD5加密
+            User user = getUserByUsername(dto.getUsername());  // 获取输入用户名对应的用户对象
+            String encodePwd = MD5Utils.getPwd(dto.getPassword());  // 将输入的密码MD5加密
             if(!encodePwd.equals(user.getPassword()))
             {
                 throw new Exception("密码错误");

@@ -1,15 +1,14 @@
 package com.example.milkorder_backend.controller;
 
 import com.example.milkorder_backend.common.api.ApiResult;
+import com.example.milkorder_backend.jwt.JwtUtil;
 import com.example.milkorder_backend.model.dto.LoginDTO;
 import com.example.milkorder_backend.model.dto.RegisterDTO;
 import com.example.milkorder_backend.model.entity.User;
 import com.example.milkorder_backend.service.IUserService;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -42,5 +41,19 @@ public class UserController {
         Map<String, String> map = new HashMap<>(16);
         map.put("token", token);
         return ApiResult.success(map, "登录成功");
+    }
+
+    // 从token里面获取用户名，在通过用户名获取用户信息
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public ApiResult<User> getUserByToken(@RequestHeader(value = JwtUtil.USER_NAME) String userName) {
+        User user = iUserService.getUserByUsername(userName);
+        return ApiResult.success(user);
+    }
+
+
+    @RequestMapping(value = "/getuser", method = RequestMethod.GET)
+    public ApiResult<User> getUser(@RequestParam("username") String userName) {
+        User user = iUserService.getUserByUsername(userName);
+        return ApiResult.success(user);
     }
 }

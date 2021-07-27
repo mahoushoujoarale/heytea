@@ -23,16 +23,16 @@ public class JwtUtil {
         map.put(USER_NAME, userId);
         String jwt = Jwts.builder()
                 .setClaims(map)
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 时间
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
-        return jwt; //jwt前面一般都会加Bearer
+        return jwt;
     }
 
     public static HttpServletRequest validateTokenAndAddUserIdToHeader(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
-            // parse the token.
+            // 解析 token（解密还原）
             try {
                 Map<String, Object> body = Jwts.parser()
                         .setSigningKey(SECRET)
@@ -48,15 +48,18 @@ public class JwtUtil {
         }
     }
 
+    // token正确，创建新的定制http对象，把从token中解析出来的信息（body）整合进去
     public static class CustomHttpServletRequest extends HttpServletRequestWrapper {
         private Map<String, String> claims;
 
         public CustomHttpServletRequest(HttpServletRequest request, Map<String, ?> claims) {
             super(request);
             this.claims = new HashMap<>();
-            claims.forEach((k, v) -> this.claims.put(k, String.valueOf(v)));
+            claims.forEach((k, v) -> this.claims.put(k, String.valueOf(v)));  // 传进来的map每一个k-v都添加进去
         }
 
+        // 重写getHeaders方法，对应注解 @RequestHeader
+        // 查看http请求头的map中是否包含对应key，如果包含就获取对应的value
         @Override
         public Enumeration<String> getHeaders(String name) {
             if (claims != null && claims.containsKey(name)) {
