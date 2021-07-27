@@ -30,7 +30,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
         // 创建一个查询对象 wrapper，对应的的实体为 User
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         // 将wrapper的username和email字段分别设为dto中传入的数据
-        wrapper.eq(User::getUsername, dto.getName()).or().eq(User::getEmail, dto.getEmail());
+        wrapper.eq(User::getUsername, dto.getName()).or().eq(User::getEmail, dto.getEmail()).or().eq(User::getMobile, dto.getMobile());
         // 用wrapper中的值匹配一个实体User对象
         User User = baseMapper.selectOne(wrapper);
         if (!ObjectUtils.isEmpty(User)) {
