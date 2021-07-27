@@ -17,10 +17,10 @@ public class JwtUtil {
     public static final String HEADER_STRING = "Authorization";
     public static final String USER_NAME = "userName";
     // 生成 token
-    public static String generateToken(String userId) {
+    public static String generateToken(String username) {
         HashMap<String, Object> map = new HashMap<>();
         //you can put any data in the map
-        map.put(USER_NAME, userId);
+        map.put(USER_NAME, username);
         String jwt = Jwts.builder()
                 .setClaims(map)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 时间
