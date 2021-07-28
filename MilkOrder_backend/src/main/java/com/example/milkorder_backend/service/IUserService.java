@@ -22,6 +22,13 @@ public interface IUserService extends IService<User> {
      */
     User getUserByUsername(String username);
     /**
+     * 通过手机号获取用户信息
+     *
+     * @param mobile
+     * @return dbUser
+     */
+    User getUserByMobile(String mobile);
+    /**
      * 用户登录
      *
      * @param dto

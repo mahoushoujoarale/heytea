@@ -7,61 +7,60 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.apache.ibatis.javassist.SerialVersionUID;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Builder
-@TableName("user")
+@TableName("drink")
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class User implements Serializable {
-    private static final long serialVersionUID = -5051120337175047163L;
+public class Drink implements Serializable {
+
+    private static final long serialVersionUID = 1032894099847211935L;
 
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
 
-    @TableField("username")
-    private String username;
+    @TableField("name")
+    private String name;
 
 
-    @JsonIgnore()
-    @TableField("password")
-    private String password;
+    @TableField("price")
+    private String price;
 
 
-    @TableField("email")
-    private String email;
+    @TableField("is_hot")
+    private Boolean isHot;
 
-    @TableField("mobile")
-    private String mobile;
+    @TableField("is_dairy")
+    private Boolean isDairy;
 
-    @Builder.Default
-    @TableField("balance")
-    private Integer balance = 100;
+    @TableField("is_recommend")
+    private Boolean isRecommend;
 
-    @JsonIgnore
-    @TableField("token")
-    private String token;
+    @TableField("des")
+    private String des;
 
-    @Builder.Default
-    @TableField("active")
-    private Boolean active = true;
+    @TableField("picture")
+    private String picture;
+
 
     /**
      * 状态。1:使用，0:已停用
      */
-    @Builder.Default
+    /*@Builder.Default
     @TableField("`status`")
-    private Boolean status = true;
+    private Boolean status = true;*/
 
     /**
-     * 用户角色
+     * 奶茶角色
      */
     @TableField("role_id")
-    private Integer roleId;  // 0是普用户、1是会员、2是管理员
+    private Integer roleId;
 
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;

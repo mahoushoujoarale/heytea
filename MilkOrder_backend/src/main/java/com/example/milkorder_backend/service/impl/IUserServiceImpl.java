@@ -21,7 +21,7 @@ import java.util.Date;
 @Service  // 标记当前类是一个service类，加上该注解会将当前类自动注入到spring容器中，不需要再在applicationContext.xml文件定义bean了
 @Transactional(rollbackFor = Exception.class)
 public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IUserService {
-    // 1. 用户注册
+    // 用户注册
     @Override
     public User executeRegister(RegisterDTO dto) {
         /**
@@ -30,7 +30,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
         // 创建一个查询对象 wrapper，对应的的实体为 User
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         // 将wrapper的username和email字段分别设为dto中传入的数据
-        wrapper.eq(User::getUsername, dto.getName()).or().eq(User::getEmail, dto.getEmail()).or().eq(User::getMobile, dto.getMobile());
+        wrapper.eq(User::getUsername, dto.getName()).or().eq(User::getMobile, dto.getMobile());
         // 用wrapper中的值匹配一个实体User对象
         User User = baseMapper.selectOne(wrapper);
         if (!ObjectUtils.isEmpty(User)) {
@@ -42,7 +42,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
                 .username(dto.getName())
                 .password(MD5Utils.getPwd(dto.getPass()))
                 .mobile(dto.getMobile())
-                .email(dto.getEmail())
+                .roleId(0)
                 .createTime(new Date())
                 .status(true)
                 .build();
@@ -58,12 +58,18 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
         return baseMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 
-    // 3. 用户登录
+    // 通过手机号获取用户
+    @Override
+    public User getUserByMobile(String mobile) {
+        return baseMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getMobile, mobile));
+    }
+
+    // 用户登录
     @Override
     public String executeLogin(LoginDTO dto) {
         String token = null;
         try {
-            User user = getUserByUsername(dto.getUsername());  // 获取输入用户名对应的用户对象
+            User user = getUserByMobile(dto.getMobile());  // 获取输入手机号对应的用户对象
             String encodePwd = MD5Utils.getPwd(dto.getPassword());  // 将输入的密码MD5加密
             if(!encodePwd.equals(user.getPassword()))
             {
@@ -72,7 +78,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
             // 生成token
             token = JwtUtil.generateToken(String.valueOf(user.getUsername()));
         } catch (Exception e) {
-            log.warn("用户不存在or密码验证失败=======>{}", dto.getUsername());
+            log.warn("用户不存在or密码验证失败=======>{}", dto.getMobile());
         }
         return token;
     }
