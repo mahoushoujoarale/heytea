@@ -18,11 +18,15 @@
       /></span>
     </div>
     <div class="input-group">
+<<<<<<< HEAD
       <input
         type="password"
         v-model="inputpasswordagain"
         placeholder="请再次输入密码"
       />
+=======
+      <input type="password" v-model="inputpasswordagain" placeholder="请再次输入密码" />
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
       <span @click="emptyinputpasswordagain($event)" v-if="inputpasswordagain"
         ><img src="./../../assets/imgs/register/delete.svg" alt=""
       /></span>
@@ -79,7 +83,11 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import axios from "./../../http/index.js";
+=======
+import axios from './../../http/index.js'
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
 export default {
   name: "Register",
   data() {
@@ -99,6 +107,7 @@ export default {
       btnTitle: "获取验证码",
 
       isChecked: false,
+<<<<<<< HEAD
       currentUser: "wangwu",
     };
   },
@@ -109,11 +118,23 @@ export default {
           params: {
             username: "wangwu",
           },
+=======
+      currentUser: 'wangwu'
+    };
+  },
+  methods: {
+      clickonce() {
+        axios.get('/user/getuser', {
+            params: {
+                username: 'wangwu'
+            }
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
         })
         .then((res) => {
           console.log(res.data);
         })
         .catch((err) => {
+<<<<<<< HEAD
           console.log(err);
         });
     },
@@ -123,6 +144,17 @@ export default {
         this.error = "";
       }, 2000);
     },
+=======
+            console.log(err);
+        })
+      },
+      bounceError(msg) {
+          this.error = msg;
+          setTimeout(() => {
+          this.error = "";
+        }, 2000);
+      },
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
     // 清空输入框
     emptyinputphone(e) {
       // console.log(e.target.parentNode.parentNode.childNodes[0].value);
@@ -181,6 +213,7 @@ export default {
       }
     },
     validatepassword() {
+<<<<<<< HEAD
       if (this.inputpassword.length < 6 || this.inputpassword.length > 18) {
         this.bounceError("密码长度需要在6-18之间");
         return false;
@@ -218,6 +251,43 @@ export default {
         })
         .catch((err) => {
           this.bounceError("验证码错误");
+=======
+        if (this.inputpassword.length < 6 || this.inputpassword.length > 18) {
+            this.bounceError("密码长度需要在6-18之间");
+            return false;
+        } else if (this.inputpassword !== this.inputpasswordagain) {
+            this.bounceError("两次输入密码不一致");
+            return false;
+        } else {
+            this.error = "";
+            return true;
+        }
+    },
+    handleregister() {
+      this.error = "";
+      if(!this.validatepassword()) return;
+      if(this.isChecked == false){
+        this.bounceError("请勾选条款");
+        return
+      }
+      axios.post("/user/register", {
+        username: this.inputphone,
+        pass: this.inputpassword,
+        mobile: this.inputphone,
+        })
+        .then((res) => {
+            console.log(res);
+            // 校验并跳转
+            if (this.verifyvalue == "111111") {
+            //localStorage.setItem("ele_register", true);
+                this.$router.push("/");
+            } else {
+                this.bounceError("验证码错误");
+            }
+        })
+        .catch((err) => {
+            this.bounceError("验证码错误");
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
         });
     },
     changeIsChecked() {
@@ -251,14 +321,22 @@ export default {
       }
     },
     inputpassword: function () {
+<<<<<<< HEAD
       if (this.inputphone.length == 11) {
+=======
+        if (this.inputphone.length == 11) {
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
         this.verifyActive = true;
         this.verifydisabled = false;
       } else {
         this.verifyActive = false;
         this.verifydisabled = true;
       }
+<<<<<<< HEAD
       if (this.verifyvalue.length == 6 && this.inputphone.length == 11) {
+=======
+        if (this.verifyvalue.length == 6 && this.inputphone.length == 11) {
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
         this.registerActive = true;
         this.registerdisabled = false;
       } else {
@@ -267,14 +345,22 @@ export default {
       }
     },
     inputpasswordagain: function () {
+<<<<<<< HEAD
       if (this.inputphone.length == 11) {
+=======
+        if (this.inputphone.length == 11) {
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
         this.verifyActive = true;
         this.verifydisabled = false;
       } else {
         this.verifyActive = false;
         this.verifydisabled = true;
       }
+<<<<<<< HEAD
       if (this.verifyvalue.length == 6 && this.inputphone.length == 11) {
+=======
+        if (this.verifyvalue.length == 6 && this.inputphone.length == 11) {
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
         this.registerActive = true;
         this.registerdisabled = false;
       } else {
@@ -427,4 +513,8 @@ export default {
   text-align: center;
   font-size: 12px;
 }
+<<<<<<< HEAD
 </style>
+=======
+</style>
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b

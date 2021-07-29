@@ -77,6 +77,15 @@ export default {
     };
   },
   methods: {
+<<<<<<< HEAD
+=======
+      bounceError(msg) {
+          this.error = msg;
+          setTimeout(() => {
+          this.error = "";
+        }, 2000);
+      },
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
     // 清空输入框
     emptyinputphone(e) {
       // console.log(e.target.parentNode.parentNode.childNodes[0].value);
@@ -127,10 +136,14 @@ export default {
     validatePhone() {
       // 验证手机号码
       if (!/^1[345678]\d{9}$/.test(this.inputphone)) {
+<<<<<<< HEAD
         this.error = "请填写合法的手机号";
         setTimeout(() => {
           this.error = "";
         }, 2000);
+=======
+        this.bounceError("请填写合法的手机号");
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
         return false;
       } else {
         this.error = "";
@@ -139,6 +152,7 @@ export default {
     },
     validatepassword() {
         if (this.inputpassword.length < 6 || this.inputpassword.length > 18) {
+<<<<<<< HEAD
             this.error = "密码长度需要在6-18之间"
             setTimeout(() => {
             this.error = "";
@@ -149,6 +163,12 @@ export default {
             setTimeout(() => {
             this.error = "";
             }, 2000);
+=======
+            this.bounceError("密码长度需要在6-18之间");
+            return false;
+        } else if (this.inputpassword !== this.inputpasswordagain) {
+           this.bounceError("两次输入密码不一致");
+>>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
             return false;
         } else {
             this.error = "";
