@@ -25,7 +25,7 @@ public class UserController {
     public ApiResult<Map<String, Object>> register(@Valid @RequestBody RegisterDTO dto) {
         User user = iUserService.executeRegister(dto);
         if (ObjectUtils.isEmpty(user)) {
-            return ApiResult.failed("账号注册失败");
+            return ApiResult.failed("账号注册失败,号码已存在");
         }
         Map<String, Object> map = new HashMap<>(16);
         map.put("user", user);

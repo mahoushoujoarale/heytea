@@ -35,7 +35,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
         User User = baseMapper.selectOne(wrapper);
         if (!ObjectUtils.isEmpty(User)) {
             // 匹配成功说明已存在
-            ApiAsserts.fail("账号或邮箱已存在！");
+            return null;
         }
         // 否者，创建一个新增对象addUser依次设置字段值，然后插入表单
         User addUser = User.builder()
