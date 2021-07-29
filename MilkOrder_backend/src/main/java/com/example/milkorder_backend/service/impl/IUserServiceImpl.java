@@ -87,11 +87,11 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
     @Override
     public String changePassword(LoginDTO dto) {
         User user= getUserByMobile(dto.getMobile());
-        user.setPassword(MD5Utils.getPwd(dto.getPassword()));
         if (ObjectUtils.isEmpty(user)){
             return "该号码未注册";
         }
         else {
+            user.setPassword(MD5Utils.getPwd(dto.getPassword()));
             baseMapper.updateById(user) ;
             return "更改密码成功";
         }
