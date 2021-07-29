@@ -87,6 +87,9 @@ public class UserController {
     @RequestMapping(value = "/getuser", method = RequestMethod.GET)
     public ApiResult<User> getUser(@RequestParam("username") String userName) {
         User user = iUserService.getUserByUsername(userName);
+        if (ObjectUtils.isEmpty(user)){
+            return ApiResult.failed("该用户不存在");
+        }
         return ApiResult.success(user);
     }
 }

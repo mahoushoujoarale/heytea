@@ -7,4 +7,16 @@
         from drink
         where name = #{name}
     </select>
+
+    <select id="selectAllDrink" resultType="com.example.milkorder_backend.model.entity.Drink">
+        select * from drink
+    </select>
+
+    <select id="selectAllDrinkOfCla" resultType="com.example.milkorder_backend.model.entity.Drink">
+        select *
+        from drink
+        where cla = #{cla}
+    </select>
+
+
 </mapper>

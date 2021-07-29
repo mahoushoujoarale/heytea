@@ -7,8 +7,10 @@ import com.example.milkorder_backend.mapper.DrinkMapper;
 import com.example.milkorder_backend.mapper.UserMapper;
 import com.example.milkorder_backend.model.dto.DrinkAddDTO;
 import com.example.milkorder_backend.model.dto.RegisterDTO;
+import com.example.milkorder_backend.model.entity.Cla;
 import com.example.milkorder_backend.model.entity.Drink;
 import com.example.milkorder_backend.model.entity.User;
+import com.example.milkorder_backend.service.IClaService;
 import com.example.milkorder_backend.service.IDrinkService;
 import com.example.milkorder_backend.service.IUserService;
 import com.example.milkorder_backend.utils.MD5Utils;
@@ -17,19 +19,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j  // 日志
 @Service  // 标记当前类是一个service类，加上该注解会将当前类自动注入到spring容器中，不需要再在applicationContext.xml文件定义bean了
 @Transactional(rollbackFor = Exception.class)
 public class IDrinkServiceImpl extends ServiceImpl<DrinkMapper,Drink> implements IDrinkService {
+    @Resource
+    private IClaService iClaService;
 
     // 1. 新增奶茶
     @Override
     public Drink executeAdd(DrinkAddDTO dto) {
-        /**
-         * 查询是否有相同名称的奶茶名
-         */
+
+        // 查询是否有相同名称的奶茶
         Drink drink = baseMapper.getDrinkByName(dto.getName());
         if (!ObjectUtils.isEmpty(drink)) {
             // 匹配成功说明已存在
@@ -46,7 +51,21 @@ public class IDrinkServiceImpl extends ServiceImpl<DrinkMapper,Drink> implements
                 .build();
         this.baseMapper.insert(addDrink);
 
+        // 添加新的分类
+        iClaService.addCla(addDrink.getCla());
+
         return addDrink;
     }
 
+    // 2. 获取奶茶列表
+    @Override
+    public List<Drink> getList() {
+        return this.baseMapper.selectAllDrink();
+    }
+
+    // 3. 获取某一分类下的奶茶列表
+    @Override
+    public List<Drink> getListByCla(String cla) {
+        return this.baseMapper.selectAllDrinkOfCla(cla);
+    }
 }
