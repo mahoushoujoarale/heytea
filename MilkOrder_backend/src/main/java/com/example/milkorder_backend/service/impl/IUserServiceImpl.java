@@ -51,7 +51,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
         return addUser;
     }
 
-    // 2. 通过用户名获取用户
+    // 通过用户名获取用户
     @Override
     public User getUserByUsername(String username) {
         // 同上
@@ -83,5 +83,17 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
         return token;
     }
 
-    
+    //  改密
+    @Override
+    public String changePassword(LoginDTO dto) {
+        User user= getUserByMobile(dto.getMobile());
+        user.setPassword(MD5Utils.getPwd(dto.getPassword()));
+        if (ObjectUtils.isEmpty(user)){
+            return "该号码未注册";
+        }
+        else {
+            baseMapper.updateById(user) ;
+            return "更改密码成功";
+        }
+    }
 }

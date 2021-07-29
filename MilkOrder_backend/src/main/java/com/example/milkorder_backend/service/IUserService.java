@@ -35,5 +35,11 @@ public interface IUserService extends IService<User> {
      * @return 生成的JWT的token
      */
     String executeLogin(LoginDTO dto);
+    /**
+     * 改密
+     * @param dto
+     * @return
+     */
+    String changePassword(LoginDTO dto);
 
 }

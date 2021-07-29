@@ -28,10 +28,11 @@ public class Drink implements Serializable {
     @TableField("name")
     private String name;
 
-
     @TableField("price")
     private String price;
 
+    @TableField("cla")
+    private String cla;
 
     @TableField("is_hot")
     private Boolean isHot;
@@ -48,13 +49,6 @@ public class Drink implements Serializable {
     @TableField("picture")
     private String picture;
 
-
-    /**
-     * 状态。1:使用，0:已停用
-     */
-    /*@Builder.Default
-    @TableField("`status`")
-    private Boolean status = true;*/
 
     /**
      * 奶茶角色

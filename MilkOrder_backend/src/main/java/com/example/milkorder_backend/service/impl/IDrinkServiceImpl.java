@@ -33,12 +33,13 @@ public class IDrinkServiceImpl extends ServiceImpl<DrinkMapper,Drink> implements
         Drink drink = baseMapper.getDrinkByName(dto.getName());
         if (!ObjectUtils.isEmpty(drink)) {
             // 匹配成功说明已存在
-            ApiAsserts.fail("该奶茶名已存在！");
+            return null;
         }
         // 否者，创建一个新增对象addDrink依次设置字段值，然后插入表单
         Drink addDrink = Drink.builder()
                 .name(dto.getName())
                 .price(dto.getPrice())
+                .cla(dto.getCla())
                 .des(dto.getDescribe())
                 .picture(dto.getPicture())
                 .createTime(new Date())

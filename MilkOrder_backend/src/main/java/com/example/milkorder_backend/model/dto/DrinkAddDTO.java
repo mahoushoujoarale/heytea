@@ -14,6 +14,10 @@ public class DrinkAddDTO {
     @NotEmpty(message = "请输入奶茶价格")
     private String price;
 
+    @NotEmpty(message = "请输入奶茶分类")
+    @Length(min = 2, max = 10, message = "长度在2-10")
+    private String cla;
+
     @NotEmpty(message = "请输入奶茶描述")
     @Length(min = 2, max = 30, message = "长度在2-30")
     private String describe;

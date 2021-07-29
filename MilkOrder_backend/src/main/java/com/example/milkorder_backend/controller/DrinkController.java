@@ -37,7 +37,7 @@ public class DrinkController {
 
         Drink drink = iDrinkService.executeAdd(dto);
         if (ObjectUtils.isEmpty(drink)) {
-            return ApiResult.failed("奶茶新增失败");
+            return ApiResult.failed("奶茶新增失败,已存在");
         }
         Map<String, Object> map = new HashMap<>(16);
         map.put("drink", drink);

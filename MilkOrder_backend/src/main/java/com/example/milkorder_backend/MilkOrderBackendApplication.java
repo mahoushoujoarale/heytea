@@ -9,7 +9,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
-@MapperScan("com.example.MilkOrder_backend.mapper") // 该包下的每个接口自动生成实现类
+@MapperScan("com.example.milkorder_backend.mapper") // 该包下的每个接口自动生成实现类
 @SpringBootApplication
 public class MilkOrderBackendApplication extends SpringBootServletInitializer {
     @Override  // 重写 configure 固定格式

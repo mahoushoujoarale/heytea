@@ -21,6 +21,11 @@ public class UserController {
     @Resource
     private IUserService iUserService;
 
+    /**
+     * 注册
+     * @param dto
+     * @return
+     */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ApiResult<Map<String, Object>> register(@Valid @RequestBody RegisterDTO dto) {
         User user = iUserService.executeRegister(dto);
@@ -29,9 +34,14 @@ public class UserController {
         }
         Map<String, Object> map = new HashMap<>(16);
         map.put("user", user);
-        return ApiResult.success(map);
+        return ApiResult.success(map,"注册成功");
     }
 
+    /**
+     * 登录
+     * @param dto
+     * @return
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ApiResult<Map<String, String>> login(@Valid @RequestBody LoginDTO dto) {
         String token = iUserService.executeLogin(dto);
@@ -43,14 +53,37 @@ public class UserController {
         return ApiResult.success(map, "登录成功");
     }
 
-    // 从token里面获取用户名，在通过用户名获取用户信息
+    /**
+     * 改密
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/forget", method = RequestMethod.POST)
+    public ApiResult<Map<String, String>> changePass(@Valid @RequestBody LoginDTO dto) {
+        String token = iUserService.changePassword(dto);
+        Map<String, String> map = new HashMap<>(16);
+        if (token == "该号码未注册") {
+            return ApiResult.failed(token);
+        }
+            return ApiResult.success(map,token);
+    }
+
+    /**
+     * 从token里面获取用户名，在通过用户名获取用户信息
+     * @param userName
+     * @return
+     */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ApiResult<User> getUserByToken(@RequestHeader(value = JwtUtil.USER_NAME) String userName) {
         User user = iUserService.getUserByUsername(userName);
         return ApiResult.success(user);
     }
 
-
+    /**
+     * 通过用户名获取用户信息
+     * @param userName
+     * @return
+     */
     @RequestMapping(value = "/getuser", method = RequestMethod.GET)
     public ApiResult<User> getUser(@RequestParam("username") String userName) {
         User user = iUserService.getUserByUsername(userName);
