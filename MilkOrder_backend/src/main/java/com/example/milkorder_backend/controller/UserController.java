@@ -6,6 +6,7 @@ import com.example.milkorder_backend.model.dto.LoginDTO;
 import com.example.milkorder_backend.model.dto.RegisterDTO;
 import com.example.milkorder_backend.model.entity.User;
 import com.example.milkorder_backend.service.IUserService;
+import com.example.milkorder_backend.utils.SendMessageUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -91,5 +92,23 @@ public class UserController {
             return ApiResult.failed("该用户不存在");
         }
         return ApiResult.success(user);
+    }
+
+    /**
+     * 发送短信验证码
+     * @param desMobile
+     * @return
+     */
+    @RequestMapping(value = "/valicode", method = RequestMethod.GET)
+    public ApiResult<Map<String,String>> getValiCode(@RequestParam("mobile") String desMobile ) {
+        String random = SendMessageUtils.getRandomCode(6);
+        //SendMessageUtils.send("SMS账户","接口秘钥","目标号码","发送内容");
+        Integer resultCode = SendMessageUtils.send("yesiyuan","d41d8cd98f00b204e980",desMobile,"验证码:"+ random);
+        String message = SendMessageUtils.getMessage(resultCode);
+        Map<String,String> map = new HashMap<>(16) ;
+        map.put("valicode",random) ;
+        if (resultCode > 0)
+            return ApiResult.success(map,message);
+        return ApiResult.failed(message);
     }
 }
