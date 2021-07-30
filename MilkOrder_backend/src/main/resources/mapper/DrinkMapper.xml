@@ -18,5 +18,4 @@
         where cla = #{cla}
     </select>
 
-
 </mapper>

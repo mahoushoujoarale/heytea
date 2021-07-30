@@ -15,6 +15,7 @@ import com.example.milkorder_backend.service.IDrinkService;
 import com.example.milkorder_backend.service.IUserService;
 import com.example.milkorder_backend.utils.MD5Utils;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -58,6 +59,7 @@ public class IDrinkServiceImpl extends ServiceImpl<DrinkMapper,Drink> implements
     }
 
     // 2. 获取奶茶列表
+    @Test
     @Override
     public List<Drink> getList() {
         return this.baseMapper.selectAllDrink();
@@ -67,5 +69,11 @@ public class IDrinkServiceImpl extends ServiceImpl<DrinkMapper,Drink> implements
     @Override
     public List<Drink> getListByCla(String cla) {
         return this.baseMapper.selectAllDrinkOfCla(cla);
+    }
+
+    // 4. 用奶茶名获取奶茶
+    @Override
+    public Drink getDrinkByName(String name) {
+        return this.baseMapper.getDrinkByName(name);
     }
 }

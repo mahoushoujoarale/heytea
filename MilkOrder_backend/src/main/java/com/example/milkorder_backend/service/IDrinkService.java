@@ -35,4 +35,11 @@ public interface IDrinkService extends IService<Drink> {
      * @return
      */
     List<Drink> getListByCla(String cla);
+
+    /**
+     * 搜索奶茶
+     * @param name
+     * @return
+     */
+    Drink getDrinkByName(String name);
 }

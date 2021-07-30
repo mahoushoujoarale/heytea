@@ -1,6 +1,7 @@
 package com.example.milkorder_backend;
 
 import com.example.milkorder_backend.jwt.JwtAuthenticationFilter;
+import com.example.milkorder_backend.threads.OrderFinishThread;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,6 +29,9 @@ public class MilkOrderBackendApplication extends SpringBootServletInitializer {
     }
     public static void main(String[] args) {
         SpringApplication.run(MilkOrderBackendApplication.class, args);
+        OrderFinishThread orderFinishThread = new OrderFinishThread();
+        Thread thread1 = new Thread(orderFinishThread);
+        thread1.start();
     }
 
 }

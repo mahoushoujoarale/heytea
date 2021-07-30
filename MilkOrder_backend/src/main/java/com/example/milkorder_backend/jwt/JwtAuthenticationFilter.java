@@ -36,8 +36,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         List<String> protectedPaths = new ArrayList<>();
         protectedPaths.add("/user/info") ;  // 登录后获取用户信息
         protectedPaths.add("/drink/add");  // 新增饮品
-        protectedPaths.add("/drink/order");  // 下单
-        protectedPaths.add("/order/info");  // 订单信息
+        protectedPaths.add("/tip/add");  // 新增小料
+        protectedPaths.add("/order/add");  // 下单
+        protectedPaths.add("/order/list");  // 历史订单
         // ...
 
         boolean bFind = false;
