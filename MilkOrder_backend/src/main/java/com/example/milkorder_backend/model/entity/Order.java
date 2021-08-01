@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Data
 @Builder
-@TableName("d_order")
+@TableName("drink_order")
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
@@ -36,6 +36,9 @@ public class Order implements Serializable {
     @TableField("drink_name")
     private String drinkName;  // 所购奶茶
 
+    @TableField("drink_num")
+    private int drinkNum;  // 奶茶杯数
+
     @TableField("tip_des")
     private String tipDes;  // 加料描述
 
@@ -47,6 +50,9 @@ public class Order implements Serializable {
 
     @TableField("is_finish")
     private Boolean isFinish;   // 订单是否已取
+
+    @TableField("is_take_out")
+    private Boolean isTakeOut;   // 自取还是外卖（默认自取）
 
     @JsonIgnore
     @TableField(value = "create_time", fill = FieldFill.INSERT)

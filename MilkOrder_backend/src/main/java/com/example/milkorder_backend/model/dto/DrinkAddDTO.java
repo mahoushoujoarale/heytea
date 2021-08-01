@@ -3,6 +3,7 @@ package com.example.milkorder_backend.model.dto;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 public class DrinkAddDTO {
@@ -23,6 +24,9 @@ public class DrinkAddDTO {
     private String describe;
 
     @NotEmpty(message = "请输入图片地址")
-    private String picture;
+    private List<String> images;
+
+    @NotEmpty(message = "标签")
+    private List<String> tags;
 
 }

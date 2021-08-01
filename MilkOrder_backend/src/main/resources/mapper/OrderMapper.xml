@@ -5,13 +5,13 @@
 
     <select id="getAllFinishedOrder" resultType="com.example.milkorder_backend.model.entity.Order">
         select *
-        from d_order
+        from drink_order
         where is_finish = false ;
     </select>
 
     <select id="getOrderListOfUser" resultType="com.example.milkorder_backend.model.entity.Order">
         select *
-        from d_order
+        from drink_order
         where username = #{username} ;
     </select>
 

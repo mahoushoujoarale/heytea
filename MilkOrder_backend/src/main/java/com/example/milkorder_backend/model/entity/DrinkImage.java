@@ -7,48 +7,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.apache.ibatis.javassist.SerialVersionUID;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Builder
-@TableName("drink")
+@TableName("drink_image")
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class Drink implements Serializable {
+public class DrinkImage implements Serializable  {
 
-    private static final long serialVersionUID = 1032894099847211935L;
+    private static final long serialVersionUID = 6611892070958916226L;
 
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
 
-    @TableField("name")
-    private String name;
+    @TableField("url")
+    private String url;
 
-    @TableField("price")
-    private String price;
-
-    @TableField("cla")
-    private String cla;
-
-    @TableField("is_hot")
-    private Boolean isHot;
-
-    @TableField("is_dairy")
-    private Boolean isDairy;
-
-    @TableField("is_recommend")
-    private Boolean isRecommend;
-
-    @TableField("des")
-    private String des;
-
-
-    @TableField("role_id")
-    private Integer roleId;
+    @TableField("drink_name")
+    private String drinkName;
 
     @JsonIgnore
     @TableField(value = "create_time", fill = FieldFill.INSERT)

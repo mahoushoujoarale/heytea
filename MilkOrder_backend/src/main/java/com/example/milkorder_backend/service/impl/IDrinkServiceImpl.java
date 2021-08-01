@@ -9,6 +9,7 @@ import com.example.milkorder_backend.model.dto.DrinkAddDTO;
 import com.example.milkorder_backend.model.dto.RegisterDTO;
 import com.example.milkorder_backend.model.entity.Cla;
 import com.example.milkorder_backend.model.entity.Drink;
+import com.example.milkorder_backend.model.entity.Tag;
 import com.example.milkorder_backend.model.entity.User;
 import com.example.milkorder_backend.service.IClaService;
 import com.example.milkorder_backend.service.IDrinkService;
@@ -30,6 +31,10 @@ import java.util.List;
 public class IDrinkServiceImpl extends ServiceImpl<DrinkMapper,Drink> implements IDrinkService {
     @Resource
     private IClaService iClaService;
+    @Resource
+    private IDrinkImageServiceImpl iDrinkImageService;
+    @Resource
+    private ITagServiceImpl iTagService;
 
     // 1. 新增奶茶
     @Override
@@ -47,7 +52,6 @@ public class IDrinkServiceImpl extends ServiceImpl<DrinkMapper,Drink> implements
                 .price(dto.getPrice())
                 .cla(dto.getCla())
                 .des(dto.getDescribe())
-                .picture(dto.getPicture())
                 .createTime(new Date())
                 .build();
         this.baseMapper.insert(addDrink);
@@ -55,13 +59,18 @@ public class IDrinkServiceImpl extends ServiceImpl<DrinkMapper,Drink> implements
         // 添加新的分类
         iClaService.addCla(addDrink.getCla());
 
+        // 添加图片
+        iDrinkImageService.executeAdd(dto);
+
+        // 添加Tag以及对应关联
+        iTagService.executeAdd(dto);
+
         return addDrink;
     }
 
     // 2. 获取奶茶列表
-    @Test
     @Override
-    public List<Drink> getList() {
+    public List<Drink> getDrinkList() {
         return this.baseMapper.selectAllDrink();
     }
 

@@ -28,8 +28,6 @@ import java.util.Map;
 public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
 
     @Resource
-    private IClaService iClaService;
-    @Resource
     private IUserService iUserService;
     @Resource
     private IDrinkService iDrinkService;
@@ -38,7 +36,6 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
 
 
     // 1. 发起订单
-    @Test
     @Override
     public Map executeAddOrder(OrderDTO dto, String username) {
         Double cost = 0.0 ;
@@ -67,13 +64,15 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
             mobile = dto.getMobile();
         // 插入表单
         Order addOrder = Order.builder()
-                .sAddress(dto.getAddress())
+                .sAddress(dto.getStore())
                 .username(user.getUsername())
                 .mobile(mobile)
                 .drinkName(dto.getDrinkName())
                 .tipDes(dto.getTipDes())
                 .otherDes(dto.getOtherDes())
-                .price(String.valueOf(cost))
+                .drinkNum(dto.getDrinkNum())
+                .price(String.valueOf(cost*dto.getDrinkNum()))
+                .isTakeOut(dto.isTakeOut())
                 .isFinish(false)
                 .createTime(new Date())
                 .build() ;
@@ -82,7 +81,11 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
         map.put("order",addOrder);
 
         List<Order> list = baseMapper.getAllFinishedOrder();
-        map.put("numOfLine",list.size());
+        if (ObjectUtils.isEmpty(list)){
+            map.put("numOfLine",0);
+        }
+        else
+            map.put("numOfLine",list.size());
 
         return map;
     }

@@ -29,7 +29,7 @@ public interface IDrinkService extends IService<Drink> {
      * 获得奶茶列表
      * @return
      */
-    List<Drink> getList();
+    List<Drink> getDrinkList();
     /**
      * 获得某一分类下的全部奶茶
      * @return

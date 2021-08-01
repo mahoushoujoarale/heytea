@@ -6,8 +6,11 @@ import com.example.milkorder_backend.model.dto.DrinkAddDTO;
 import com.example.milkorder_backend.model.dto.RegisterDTO;
 import com.example.milkorder_backend.model.entity.Drink;
 import com.example.milkorder_backend.model.entity.User;
+import com.example.milkorder_backend.model.vo.DrinkVO;
 import com.example.milkorder_backend.service.IDrinkService;
 import com.example.milkorder_backend.service.IUserService;
+import com.example.milkorder_backend.service.impl.IDrinkImageServiceImpl;
+import com.example.milkorder_backend.service.impl.IDrinkTagServiceImpl;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +27,10 @@ public class DrinkController {
     private IDrinkService iDrinkService;
     @Resource
     private IUserService iUserService;
+    @Resource
+    private IDrinkImageServiceImpl iDrinkImageService;
+    @Resource
+    private IDrinkTagServiceImpl iDrinkTagService;
 
     int counter = 1 ;
 
@@ -36,7 +43,6 @@ public class DrinkController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult<Map<String, Object>> Add(@Valid @RequestBody DrinkAddDTO dto, @RequestHeader(value = JwtUtil.USER_NAME) String userName) {
         //先看登录用户是否有权限
-        System.out.println(userName);
         User user = iUserService.getUserByUsername(userName);
         if (user.getRoleId() != 2){
             return ApiResult.failed("用户无权限");
@@ -47,7 +53,17 @@ public class DrinkController {
             return ApiResult.failed("奶茶新增失败,已存在");
         }
         Map<String, Object> map = new HashMap<>(16);
-        map.put("drink", drink);
+        DrinkVO drinkVO = DrinkVO.builder()
+                .name(drink.getName())
+                .cla(drink.getCla())
+                .des(drink.getDes())
+                .id(drink.getId())
+                .images(iDrinkImageService.getAllImages(drink.getName()))
+                .tags(iDrinkTagService.getTagsByDrinkId(drink.getId()))
+                .price(drink.getPrice())
+                .build();
+
+        map.put("drink", drinkVO);
         return ApiResult.success(map);
     }
 
@@ -58,9 +74,18 @@ public class DrinkController {
     @RequestMapping(value = "/list")
     public ApiResult<Map<String, Object>> getDrinkList() {
         Map<String, Object> map = new HashMap<>(16);
-        List<Drink> list = iDrinkService.getList();
+        List<Drink> list = iDrinkService.getDrinkList();
         for (Drink drink : list ){
-            map.put("drink"+counter ,drink);
+            DrinkVO drinkVO = DrinkVO.builder()
+                    .name(drink.getName())
+                    .cla(drink.getCla())
+                    .des(drink.getDes())
+                    .id(drink.getId())
+                    .images(iDrinkImageService.getAllImages(drink.getName()))
+                    .tags(iDrinkTagService.getTagsByDrinkId(drink.getId()))
+                    .price(drink.getPrice())
+                    .build();
+            map.put("drink"+counter ,drinkVO);
             counter++;
         }
         return ApiResult.success(map);

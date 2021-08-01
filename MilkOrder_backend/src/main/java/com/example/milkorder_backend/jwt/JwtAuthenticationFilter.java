@@ -37,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         protectedPaths.add("/user/info") ;  // 登录后获取用户信息
         protectedPaths.add("/drink/add");  // 新增饮品
         protectedPaths.add("/tip/add");  // 新增小料
+        protectedPaths.add("/store/add");  // 新增店铺
         protectedPaths.add("/order/add");  // 下单
         protectedPaths.add("/order/list");  // 历史订单
         // ...
