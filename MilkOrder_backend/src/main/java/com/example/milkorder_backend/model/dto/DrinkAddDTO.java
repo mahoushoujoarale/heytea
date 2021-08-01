@@ -20,7 +20,7 @@ public class DrinkAddDTO {
     private String cla;
 
     @NotEmpty(message = "请输入奶茶描述")
-    @Length(min = 2, max = 30, message = "长度在2-30")
+    @Length(min = 2, max = 300, message = "长度在2-300")
     private String describe;
 
     @NotEmpty(message = "请输入图片地址")

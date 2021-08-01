@@ -29,9 +29,9 @@ public class MilkOrderBackendApplication extends SpringBootServletInitializer {
     }
     public static void main(String[] args) {
         SpringApplication.run(MilkOrderBackendApplication.class, args);
-/*        OrderFinishThread orderFinishThread = new OrderFinishThread();
+        OrderFinishThread orderFinishThread = new OrderFinishThread();
         Thread thread1 = new Thread(orderFinishThread);
-        thread1.start();*/
+        thread1.start();
     }
 
 }

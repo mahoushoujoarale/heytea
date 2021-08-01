@@ -20,10 +20,10 @@ public class OrderDTO {
     @Size(min = 2, max = 15, message = "2到15位")
     private String drinkName;  // 所购奶茶
 
-    @Size(min = 0, max = 50, message = "0到50位")
+    @Size(min = 0, max = 100, message = "0到50位")
     private String tipDes;  // 加料描述
 
-    @Size(min = 0, max = 50, message = "0到50位")
+    @Size(min = 0, max = 100, message = "0到50位")
     private String otherDes;  // 其他描述
 
     private int drinkNum ; // 奶茶倍数
