@@ -38,4 +38,22 @@ public class IDelAddressServiceImpl extends ServiceImpl<DelAddressMapper, DelAdd
         List<DelAddress> list = baseMapper.getAllAddress(user.getId());
         return list;
     }
+
+    // 删除地址
+    @Override
+    public void executeDelete(String id) {
+        baseMapper.deleteById(id) ;
+    }
+
+    @Override
+    public DelAddress executeUpdate(DelAddress delAddress, String id) {
+        String linkman = delAddress.getLinkman();
+        boolean isMale = delAddress.getIsMale();
+        String mobile = delAddress.getMobile();
+        String address = delAddress.getAddress();
+        String detail = delAddress.getDetail();
+        baseMapper.updateAddress(linkman,isMale,mobile,address,detail,id) ;
+        DelAddress newDelAddress = baseMapper.selectById(id);
+        return newDelAddress;
+    }
 }

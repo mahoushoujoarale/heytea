@@ -133,7 +133,11 @@ public class UserController {
         return ApiResult.success(list,"新增地址成功");
     }
 
-
+    /**
+     * 获取当前用户全部地址
+     * @param userName
+     * @return
+     */
     @RequestMapping(value = "/address_list", method = RequestMethod.GET)
     public ApiResult<List<DelAddress>> getAddressOfUser(@RequestHeader(value = JwtUtil.USER_NAME) String userName) {
         List<DelAddress> list = iDelAddressService.getAllAddressOfUser(userName);

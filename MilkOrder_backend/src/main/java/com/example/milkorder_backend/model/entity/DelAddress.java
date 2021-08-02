@@ -31,7 +31,7 @@ public class DelAddress implements Serializable {
     private String linkman;   // 联系人姓名
 
     @TableField("is_male")
-    private boolean isMale;   // 性别
+    private Boolean isMale;   // 性别
 
     @TableField("mobile")
     private String mobile;   // 手机号

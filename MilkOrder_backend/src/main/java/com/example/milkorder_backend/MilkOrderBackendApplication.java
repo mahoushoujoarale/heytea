@@ -27,6 +27,8 @@ public class MilkOrderBackendApplication extends SpringBootServletInitializer {
         registrationBean.setFilter(filter);  // 把过滤器注册到整个框架中
         return registrationBean;
     }
+
+
     public static void main(String[] args) {
         SpringApplication.run(MilkOrderBackendApplication.class, args);
         OrderFinishThread orderFinishThread = new OrderFinishThread();

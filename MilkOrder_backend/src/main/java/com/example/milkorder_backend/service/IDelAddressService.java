@@ -19,4 +19,17 @@ public interface IDelAddressService extends IService<DelAddress> {
      * @return
      */
     List<DelAddress> getAllAddressOfUser(String userName);
+
+    /**
+     * 删除地址
+     * @param id
+     */
+    void executeDelete(String id);
+
+    /**
+     * 更改地址信息
+     * @param id
+     * @return
+     */
+    DelAddress executeUpdate(DelAddress delAddress, String id);
 }

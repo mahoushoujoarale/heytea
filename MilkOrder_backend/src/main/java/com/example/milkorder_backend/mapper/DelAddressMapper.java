@@ -14,4 +14,16 @@ public interface DelAddressMapper extends BaseMapper<DelAddress> {
      * @return
      */
     List<DelAddress> getAllAddress(String userId);
+
+    /**
+     * 更新地址
+     * @param linkman
+     * @param isMale
+     * @param mobile
+     * @param address
+     * @param detail
+     * @param id
+     * @return
+     */
+    void updateAddress(String linkman, boolean isMale, String mobile ,String address ,String detail, String id);
 }
