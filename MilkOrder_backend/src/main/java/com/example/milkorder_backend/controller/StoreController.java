@@ -57,10 +57,7 @@ public class StoreController {
         int counter = 1;
         Map<String, Object> map = new HashMap<>(16);
         List<Store> list = iStoreService.getStoreList();
-        for (Store store : list ){
-            map.put("store"+counter ,store);
-            counter++;
-        }
+        map.put("store",list);
         return ApiResult.success(map);
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,7 @@ public class DrinkController {
     public ApiResult<Map<String, Object>> getDrinkList() {
         Map<String, Object> map = new HashMap<>(16);
         List<Drink> list = iDrinkService.getDrinkList();
+        List<DrinkVO> listVO = new ArrayList<>();
         for (Drink drink : list ){
             DrinkVO drinkVO = DrinkVO.builder()
                     .name(drink.getName())
@@ -85,9 +87,9 @@ public class DrinkController {
                     .tags(iDrinkTagService.getTagsByDrinkId(drink.getId()))
                     .price(drink.getPrice())
                     .build();
-            map.put("drink"+counter ,drinkVO);
-            counter++;
+            listVO.add(drinkVO);
         }
+        map.put("drink",listVO);
         return ApiResult.success(map);
     }
 
@@ -96,10 +98,20 @@ public class DrinkController {
         counter = 1;
         Map<String, Object> map = new HashMap<>(16);
         List<Drink> list = iDrinkService.getListByCla(cla);
+        List<DrinkVO> listVO = new ArrayList<>();
         for (Drink drink : list ){
-            map.put("drink"+ counter,drink);
-            counter++;
+            DrinkVO drinkVO = DrinkVO.builder()
+                    .name(drink.getName())
+                    .cla(drink.getCla())
+                    .des(drink.getDes())
+                    .id(drink.getId())
+                    .images(iDrinkImageService.getAllImages(drink.getName()))
+                    .tags(iDrinkTagService.getTagsByDrinkId(drink.getId()))
+                    .price(drink.getPrice())
+                    .build();
+            listVO.add(drinkVO);
         }
+        map.put("drink",listVO);
         return ApiResult.success(map);
     }
 }

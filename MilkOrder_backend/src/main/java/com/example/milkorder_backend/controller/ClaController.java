@@ -25,10 +25,7 @@ public class ClaController {
     public ApiResult<Map<String, Object>> getClaList() {
         Map<String, Object> map = new HashMap<>(16);
         List<Cla> list = iClaService.getClaList();
-        for (Cla cla : list ){
-            map.put("class"+counter ,cla);
-            counter++;
-        }
+        map.put("class",list);
         return ApiResult.success(map);
     }
 

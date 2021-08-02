@@ -26,7 +26,6 @@ public class DrinkAddDTO {
     @NotEmpty(message = "请输入图片地址")
     private List<String> images;
 
-    @NotEmpty(message = "标签")
     private List<String> tags;
 
 }

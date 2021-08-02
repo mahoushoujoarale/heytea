@@ -1,0 +1,68 @@
+CREATE TABLE `drink`  (
+  `id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ID主键',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '奶茶名',
+  `price` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '价格',
+  `cla` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '分类',
+  `is_hot` bit(1) NOT NULL DEFAULT b'1' COMMENT '是否热饮，1：是，0：否',
+  `is_dairy` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否为乳制品，1：是，0：否',
+  `is_recommend` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否推荐，1：是，0：否',
+  `des` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '描述',
+  `role_id` int NULL DEFAULT NULL COMMENT '奶茶角色',
+  `create_time` datetime NOT NULL COMMENT '加入时间',
+  `modify_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `name`(`name`) USING BTREE,
+  INDEX `drink_create_time`(`create_time`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '奶茶表' ROW_FORMAT = DYNAMIC;
+
+
+CREATE TABLE `drink_order`  (
+  `id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ID主键',
+  `store_address` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '所选门店',
+  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '下单者用户名',
+  `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '下单者联系电话',
+  `drink_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '订单奶茶名',
+  `drink_num` int COMMENT '奶茶杯数',
+  `tip_des` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '加料描述',
+  `other_des` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '其他描述',
+  `price` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '订单总价格',
+  `is_finish` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否已完成，1：是，0：否',
+  `is_take_out` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否外卖，1：是，0：否',
+  `create_time` datetime NOT NULL COMMENT '加入时间',
+  `modify_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `drink_create_time`(`create_time`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单' ROW_FORMAT = DYNAMIC;
+
+
+CREATE TABLE `store`  (
+  `id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ID主键',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '店铺名',
+  `address` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '店铺地址',
+  `create_time` datetime NOT NULL COMMENT '加入时间',
+  `modify_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `name`(`name`) USING BTREE,
+  INDEX `store_create_time`(`create_time`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '店铺表' ROW_FORMAT = DYNAMIC;
+
+CREATE TABLE `tag`  (
+  `id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ID主键',
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '图片地址',
+  `create_time` datetime NOT NULL COMMENT '加入时间',
+  `modify_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `name`(`name`) USING BTREE,
+  INDEX `drink_create_time`(`create_time`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '奶茶表' ROW_FORMAT = DYNAMIC;
+
+CREATE TABLE `drink_image`  (
+  `id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ID主键',
+  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '图片地址',
+  `drink_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '所述奶茶名',
+  `create_time` datetime NOT NULL COMMENT '加入时间',
+  `modify_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `name`(`url`) USING BTREE,
+  INDEX `drink_create_time`(`create_time`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '奶茶表' ROW_FORMAT = DYNAMIC;

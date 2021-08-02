@@ -58,10 +58,7 @@ public class TipController {
     public ApiResult<Map<String, Object>> getDrinkList() {
         Map<String, Object> map = new HashMap<>(16);
         List<Tip> list = iTipService.getList();
-        for (Tip tip : list ){
-            map.put("tip"+counter ,tip);
-            counter++;
-        }
+        map.put("tip",list);
         return ApiResult.success(map);
     }
 
