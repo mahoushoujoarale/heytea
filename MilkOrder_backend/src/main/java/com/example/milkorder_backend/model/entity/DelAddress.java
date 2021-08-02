@@ -39,8 +39,8 @@ public class DelAddress implements Serializable {
     @TableField("address")
     private String address;   // 大致地址
 
-    @TableField("house_number")
-    private String hNumber;  // 门牌号
+    @TableField("detail")
+    private String detail;  // 门牌号
 
     @JsonIgnore
     @TableField(value = "create_time", fill = FieldFill.INSERT)

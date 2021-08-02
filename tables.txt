@@ -24,6 +24,7 @@ CREATE TABLE `del_address`  (
   `linkman` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '联系人姓名',
   `is_male` bit(1) NOT NULL DEFAULT b'1' COMMENT '是否为女性，1：是，0：否',
   `mobile` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机',
+  `detail` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '详细地址',
   `address` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '大致地址',
   `create_time` datetime NOT NULL COMMENT '加入时间',
   `modify_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
