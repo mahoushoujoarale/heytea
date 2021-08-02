@@ -34,8 +34,8 @@ public class OrderFinishThread implements Runnable{
             e.printStackTrace();
         }
 
-        String selectStr = "select * from d_order where is_finish = false limit 1;" ;
-        String updateStr = "UPDATE d_order SET is_finish = true where id = ";
+        String selectStr = "select * from drink_order where is_finish = false limit 1;" ;
+        String updateStr = "UPDATE drink_order SET is_finish = true where id = ";
 
         ResultSet set = null;
         PreparedStatement selectPs = null;

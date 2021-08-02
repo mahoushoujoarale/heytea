@@ -43,6 +43,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
                 .password(MD5Utils.getPwd(dto.getPass()))
                 .mobile(dto.getMobile())
                 .roleId(0)
+                .avatar("https://img0.baidu.com/it/u=3577691567,3678877448&fm=26&fmt=auto&gp=0.jpg")
                 .createTime(new Date())
                 .status(true)
                 .build();

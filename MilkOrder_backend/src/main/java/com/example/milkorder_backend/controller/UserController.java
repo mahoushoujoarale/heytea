@@ -4,7 +4,10 @@ import com.example.milkorder_backend.common.api.ApiResult;
 import com.example.milkorder_backend.jwt.JwtUtil;
 import com.example.milkorder_backend.model.dto.LoginDTO;
 import com.example.milkorder_backend.model.dto.RegisterDTO;
+import com.example.milkorder_backend.model.entity.DelAddress;
 import com.example.milkorder_backend.model.entity.User;
+import com.example.milkorder_backend.service.IDelAddressService;
+import com.example.milkorder_backend.service.IDrinkImageService;
 import com.example.milkorder_backend.service.IUserService;
 import com.example.milkorder_backend.utils.SendMessageUtils;
 import org.springframework.util.ObjectUtils;
@@ -13,14 +16,16 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     @Resource
     private IUserService iUserService;
+
+    @Resource
+    private IDelAddressService iDelAddressService;
 
     /**
      * 注册
@@ -110,5 +115,28 @@ public class UserController {
         if (resultCode > 0)
             return ApiResult.success(map,message);
         return ApiResult.failed(message);
+    }
+
+    /**
+     * 添加收获地址
+     * @param delAddress
+     * @param userName
+     * @return
+     */
+    @RequestMapping(value = "/add_address", method = RequestMethod.POST)
+    public ApiResult<List<Object>> addAddress(@Valid @RequestBody DelAddress delAddress , @RequestHeader(value = JwtUtil.USER_NAME) String userName) {
+        User user = iUserService.getUserByUsername(userName);
+        delAddress.setUserId(user.getId());
+        DelAddress addDelAddress = iDelAddressService.executeAdd(delAddress);
+        List<Object> list = new ArrayList<>();
+        list.add(addDelAddress);
+        return ApiResult.success(list,"新增地址成功");
+    }
+
+
+    @RequestMapping(value = "/address_list", method = RequestMethod.GET)
+    public ApiResult<List<DelAddress>> getAddressOfUser(@RequestHeader(value = JwtUtil.USER_NAME) String userName) {
+        List<DelAddress> list = iDelAddressService.getAllAddressOfUser(userName);
+        return ApiResult.success(list);
     }
 }

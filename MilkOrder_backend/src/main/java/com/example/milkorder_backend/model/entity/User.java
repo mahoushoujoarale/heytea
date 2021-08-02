@@ -31,6 +31,8 @@ public class User implements Serializable {
     @TableField("password")
     private String password;
 
+    @TableField("avatar")
+    private String avatar;
 
     @TableField("email")
     private String email;
@@ -42,9 +44,6 @@ public class User implements Serializable {
     @TableField("balance")
     private Integer balance = 100;
 
-    @JsonIgnore
-    @TableField("token")
-    private String token;
 
     @Builder.Default
     @TableField("active")
