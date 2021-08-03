@@ -10,6 +10,7 @@ import com.example.milkorder_backend.model.entity.Order;
 import com.example.milkorder_backend.model.entity.Tip;
 import com.example.milkorder_backend.model.entity.User;
 import com.example.milkorder_backend.service.*;
+import com.example.milkorder_backend.utils.RandomUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,8 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
         List<Order> orderList = new ArrayList<>();
         Map map = new HashMap<>();
         int counter = 1;
+        String code = RandomUtils.getRandomCode(4) ; // 随机四位取件码
+
         for (OneOrderDTO oneOrderDTO : list) {
             Double cost = 0.0 ;
 
@@ -75,6 +78,7 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
                     .price(String.valueOf(cost*oneOrderDTO.getDrinkNum()))
                     .tipDes(oneOrderDTO.getTipDes())
                     .otherDes(oneOrderDTO.getOtherDes())
+                    .code(code)
                     .build();
             baseMapper.insert(addOrder) ;
             orderList.add(addOrder);
@@ -82,12 +86,14 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
         map.put("order",orderList);
 
         // 计算排队时间
-        List<Order> noFinisedOrder = baseMapper.getAllFinishedOrder();
-        if (ObjectUtils.isEmpty(noFinisedOrder)){
+        List<Order> noFinishedOrder = baseMapper.getAllFinishedOrder();
+        if (ObjectUtils.isEmpty(noFinishedOrder)){
             map.put("numOfLine",0);
         }
         else
-            map.put("numOfLine",noFinisedOrder.size());
+            map.put("numOfLine",noFinishedOrder.size());
+
+        map.put("code",code);
 
         return map;
     }
@@ -96,4 +102,5 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
     public List<Order> orderListOfUser(String username) {
         return baseMapper.getOrderListOfUser(username);
     }
+
 }

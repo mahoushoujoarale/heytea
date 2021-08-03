@@ -37,8 +37,9 @@ public class OrderController {
         Map<String, Object> resMap = new HashMap<>(16);
         if (ObjectUtils.isEmpty(map))
             return ApiResult.failed("下单失败");
-        resMap.put("order",map.get("order")) ;
         resMap.put("waitTime",map.get("numOfLine")) ;
+        resMap.put("code",map.get("code")) ;
+        resMap.put("order",map.get("order")) ;
         return ApiResult.success(resMap,"下单成功");
     }
 

@@ -33,6 +33,9 @@ public class Order implements Serializable {
     @TableField("del_id")
     private String delId;  // 收货信息的id
 
+    @TableField("code")
+    private String code;  // 取单码
+
     @TableField("drink_name")
     private String drinkName;  // 所购奶茶
 
