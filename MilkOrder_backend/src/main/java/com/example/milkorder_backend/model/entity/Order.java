@@ -40,7 +40,7 @@ public class Order implements Serializable {
     private String drinkName;  // 所购奶茶
 
     @TableField("drink_num")
-    private int drinkNum;  // 奶茶杯数
+    private String drinkNum;  // 奶茶杯数
 
     @TableField("tip_des")
     private String tipDes;  // 加料描述

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.*;
 
@@ -51,12 +52,12 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
         String allTipDes = "";
         String allOtherDes = "";
         Double cost = 0.0 ;
-        int number = 0;
+        String number = "";
 
         for (OneOrderDTO oneOrderDTO : list) {
             Drink drink = iDrinkService.getDrinkByName(oneOrderDTO.getDrinkName());
             // 杯数
-            number += oneOrderDTO.getDrinkNum();
+            number = number + oneOrderDTO.getDrinkNum() + "+" ;
             // 计算奶茶价格
             cost += Double.parseDouble(drink.getPrice()) * oneOrderDTO.getDrinkNum();
             if (ObjectUtils.isEmpty(drink)){
@@ -116,10 +117,26 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
     public List<OrderVO> orderListOfUser(String username) {
         List<Order> list =  baseMapper.getOrderListOfUser(username) ;
         List<OrderVO> orderVOList = new ArrayList<>();
-        Integer counter = 1;
 
         for (Order order : list) {
+            Integer counter = 0;
+            Integer number = 0;
             String allDrinkName = order.getDrinkName();
+            // 获取每一种奶茶的杯数
+            List<String> num = new ArrayList<>();
+            String allNum = order.getDrinkNum();
+            for (int i = -1 ; i < allNum.length() ; i = allNum.indexOf("+",i) + 1){
+                if (i == 0 )
+                    break;
+                else if (i == -1)
+                    i++;
+                if (allNum.indexOf("+",i) != -1){
+                    num.add(allNum.substring(i,allNum.indexOf("+",i)));
+                }
+
+            }
+
+
             List<DrinkVO> drinks = new ArrayList<>();
             // 获取某一订单下的所有奶茶
             for (int i = -1 ; i < allDrinkName.length() ; i = allDrinkName.indexOf("\t",i) + 1){
@@ -132,24 +149,23 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
                     DrinkVO drinkVO = DrinkVO.builder()
                             .name(drink.getName())
                             .images(iDrinkImageService.getAllImages(drink.getName()))
+                            .price(drink.getPrice())
+                            .num(Integer.parseInt(num.get(counter)))
                             .build();
+                    number += Integer.parseInt(num.get(counter)) ;
+                    counter++ ;
                     drinks.add(drinkVO);
                 }
-                else {
-                    Drink drink = iDrinkService.getDrinkByName(allDrinkName.substring(i,allDrinkName.indexOf("\t",i)));
-                    DrinkVO drinkVO = DrinkVO.builder()
-                            .name(drink.getName())
-                            .images(iDrinkImageService.getAllImages(drink.getName()))
-                            .build();
-                    drinks.add(drinkVO);
-                }
+
             }
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");  // 格式化时间
 
             OrderVO orderVO = OrderVO.builder()
                     .delId(order.getDelId())
                     .store(order.getStore())
                     .code(order.getCode())
-                    .drinkNum(order.getDrinkNum())
+                    .drinkNum(number)
                     .drink(drinks)
                     .id(order.getId())
                     .isTakeOut(order.getIsTakeOut())
@@ -158,7 +174,7 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
                     .tipDes(order.getTipDes())
                     .price(order.getPrice())
                     .username(order.getUsername())
-                    .createTime(order.getCreateTime())
+                    .createTime(sdf.format(order.getCreateTime()))
                     .build();
 
             orderVOList.add(orderVO);

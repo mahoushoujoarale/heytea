@@ -57,4 +57,5 @@ public class Drink implements Serializable {
     @JsonIgnore
     @TableField(value = "modify_time", fill = FieldFill.INSERT_UPDATE)
     private Date modifyTime;
+
 }

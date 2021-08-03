@@ -33,7 +33,7 @@ public class OrderVO {
     private List<DrinkVO> drink;  // 所购奶茶
 
 
-    private int drinkNum;  // 奶茶杯数
+    private Integer drinkNum;  // 奶茶杯数
 
 
     private List<String> image;  // 奶茶杯数
@@ -53,6 +53,6 @@ public class OrderVO {
 
     private Boolean isTakeOut;   // 自取还是外卖（默认自取）
 
-    private Date createTime;
+    private String createTime;
 
 }
