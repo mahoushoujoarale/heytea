@@ -41,5 +41,6 @@ public class DrinkVO {
 
     private String des;
 
+    private Integer num ;  // 杯数，订单时用
 
 }

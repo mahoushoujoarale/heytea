@@ -40,7 +40,7 @@ public class Order implements Serializable {
     private String drinkName;  // 所购奶茶
 
     @TableField("drink_num")
-    private int drinkNum;  // 奶茶杯数
+    private String drinkNum;  // 奶茶杯数
 
     @TableField("tip_des")
     private String tipDes;  // 加料描述
@@ -57,7 +57,6 @@ public class Order implements Serializable {
     @TableField("is_take_out")
     private Boolean isTakeOut;   // 自取还是外卖（默认自取）
 
-    @JsonIgnore
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;
 
