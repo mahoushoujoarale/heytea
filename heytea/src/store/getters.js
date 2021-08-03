@@ -25,6 +25,9 @@ const getters = {
     },
     getAddrNum(state) {
         return state.addrNum;
+    },
+    getOrderNum(state) {
+        return state.orderNum;
     }
 }
 

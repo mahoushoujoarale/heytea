@@ -16,13 +16,14 @@
         历史订单
       </div>
     </div>
-    <div v-if="order_active === 0" class="order-content">
-      <orderItem :status="true"></orderItem>
-    </div>
-    <div v-if="order_active === 1" class="history-content">
-      <orderItem :status="true"></orderItem>
-      <orderItem :status="true"></orderItem>
-      <orderItem :status="false"></orderItem>
+    <div class="unlogged" v-show="!$store.state.isLogin" @click="$router.push('/mine')"><div>请先登录</div></div>
+    <div class="logged" v-show="$store.state.isLogin">
+      <div v-if="order_active === 0" class="order-content">
+        <orderItem v-for="(item, index) in showList" :key="index" :food='item'  @click="toDetail(index)"></orderItem>
+      </div>
+      <div v-if="order_active === 1" class="history-content">
+        <orderItem v-for="(item, index) in showList" :key="index" :food='item'  @click="toDetail(index)"></orderItem>
+      </div>
     </div>
     <div class="footer">没有更多了</div>
   </div>
@@ -31,6 +32,7 @@
 <script>
 //import {getOrderList} from 'network/index'
 import orderItem from "./childCom/orderItem.vue";
+import axios from '/src/request/index.js';
 export default {
   name: "Order",
   components: {
@@ -39,21 +41,27 @@ export default {
   data() {
     return {
       order_active: 0,
+      showList: [],
     };
   },
-  // created(){
-  //   getOrderList({
-  //     user_id:1
-  //   }).then(res=>{
-  //     console.log(res);
-  //   }).catch(err=>{
-
-  //   })
-  // },
+  beforeMount() {
+    axios.get('/order/list')
+    .then((res) => {
+      // console.log(res);
+      this.showList = res.data.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  },
   methods: {
     changeTab(index) {
       this.order_active = index;
     },
+    toDetail(index) {
+      this.$store.commit('SELECTORDERNUM', index);
+      this.$router.push('/orderdetail');
+    }
   },
 };
 </script>
@@ -86,6 +94,20 @@ export default {
 }
 .history-content {
   padding-top: 100px;
+}
+.unlogged {
+  position: absolute;
+  top: 50%;
+  width: 60%;
+  margin: 0 20%;
+  text-align: center;
+}
+.unlogged > div {
+  font-size: 20px;
+  padding:15px;
+  color: white;
+  border-radius: 10px;
+  background-color: orange;
 }
 .footer {
   text-align: center;

@@ -21,6 +21,7 @@ const mutations = {
         .then((res) => {
             state.user.info = res.data.data;
             state.isLogin = true;
+            localStorage.setItem('info', state.user.info);
         })
         .catch((err) => {
             console.log(err);
@@ -28,6 +29,7 @@ const mutations = {
         axios.get('/address/list')
         .then((res) => {
             state.user.address = res.data.data;
+            localStorage.setItem('address', state.user.address);
         })
         .catch((err) => {
             console.log(err);
@@ -35,11 +37,16 @@ const mutations = {
     },
     LOGOUT(state) {
         localStorage.removeItem('token');
+        localStorage.removeItem('info');
+        localStorage.removeItem('address');
         state.user = {};
-        state.isLogin = true;
+        state.isLogin = false;
     },
     SELECTADDRNUM(state, num) {
         state.addrNum = num;
+    },
+    SELECTORDERNUM(state, num) {
+        state.orderNum = num;
     }
 }
 

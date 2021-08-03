@@ -55,7 +55,8 @@ export default {
     min-height: 95%;
 }
 .isActive {
-    outline: rgba(0, 0, 0, 0.05) solid 3px;
+    outline: rgba(0, 0, 0, 0.1) solid 3px;
+    background-color: orange;
 }
 #selectAddress .footer {
     margin: 100px 10% 0;
