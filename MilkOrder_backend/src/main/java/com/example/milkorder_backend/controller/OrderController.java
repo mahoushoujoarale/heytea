@@ -7,6 +7,7 @@ import com.example.milkorder_backend.model.dto.OrderDTO;
 import com.example.milkorder_backend.model.entity.Drink;
 import com.example.milkorder_backend.model.entity.Order;
 import com.example.milkorder_backend.model.entity.User;
+import com.example.milkorder_backend.model.vo.OrderVO;
 import com.example.milkorder_backend.service.IOrderService;
 import com.example.milkorder_backend.service.IUserService;
 import org.springframework.util.ObjectUtils;
@@ -49,8 +50,8 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ApiResult<List<Order>> getOrderListOfUser(@RequestHeader(value = JwtUtil.USER_NAME) String userName) {
-        List<Order> list = iOrderService.orderListOfUser(userName);
+    public ApiResult<List<OrderVO>> getOrderListOfUser(@RequestHeader(value = JwtUtil.USER_NAME) String userName) {
+        List<OrderVO> list = iOrderService.orderListOfUser(userName);
         return ApiResult.success(list);
     }
 

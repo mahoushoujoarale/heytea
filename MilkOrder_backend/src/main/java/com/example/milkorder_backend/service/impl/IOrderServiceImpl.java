@@ -9,6 +9,8 @@ import com.example.milkorder_backend.model.entity.Drink;
 import com.example.milkorder_backend.model.entity.Order;
 import com.example.milkorder_backend.model.entity.Tip;
 import com.example.milkorder_backend.model.entity.User;
+import com.example.milkorder_backend.model.vo.DrinkVO;
+import com.example.milkorder_backend.model.vo.OrderVO;
 import com.example.milkorder_backend.service.*;
 import com.example.milkorder_backend.utils.RandomUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,8 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
     private IDrinkService iDrinkService;
     @Resource
     private ITipService iTipService;
+    @Resource
+    private IDrinkImageServiceImpl iDrinkImageService;
 
 
     // 1. 发起订单
@@ -43,16 +47,24 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
         Map map = new HashMap<>();
         int counter = 1;
         String code = RandomUtils.getRandomCode(4) ; // 随机四位取件码
+        String drinkName = "" ;
+        String allTipDes = "";
+        String allOtherDes = "";
+        Double cost = 0.0 ;
+        int number = 0;
 
         for (OneOrderDTO oneOrderDTO : list) {
-            Double cost = 0.0 ;
-
             Drink drink = iDrinkService.getDrinkByName(oneOrderDTO.getDrinkName());
+            // 杯数
+            number += oneOrderDTO.getDrinkNum();
+            // 计算奶茶价格
+            cost += Double.parseDouble(drink.getPrice()) * oneOrderDTO.getDrinkNum();
             if (ObjectUtils.isEmpty(drink)){
                 return null;
             }
-            // 计算奶茶价格
-            cost += Double.parseDouble(drink.getPrice());
+            drinkName = drinkName + oneOrderDTO.getDrinkName() + "\t";
+            allOtherDes = allOtherDes + oneOrderDTO.getOtherDes() + "\t";
+            allTipDes = allTipDes + oneOrderDTO.getTipDes() + "\t";
             // 计算所有小料总价格
             String tipDes = oneOrderDTO.getTipDes();
             for (int i = -1 ; i < tipDes.length() ; i = tipDes.indexOf("&",i) + 1){
@@ -66,6 +78,8 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
                     cost += Double.parseDouble(iTipService.getTipPrice(tipDes.substring(i,tipDes.length())));
             }
 
+        }
+
             // 插入表单
             Order addOrder = Order.builder()
                     .delId(dto.getDelId())
@@ -73,16 +87,16 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
                     .store(dto.getStore())
                     .createTime(new Date())
                     .isTakeOut(dto.isTakeOut())
-                    .drinkName(oneOrderDTO.getDrinkName())
-                    .drinkNum(oneOrderDTO.getDrinkNum())
-                    .price(String.valueOf(cost*oneOrderDTO.getDrinkNum()))
-                    .tipDes(oneOrderDTO.getTipDes())
-                    .otherDes(oneOrderDTO.getOtherDes())
+                    .drinkName(drinkName)
+                    .drinkNum(number)
+                    .price(String.valueOf(cost))
+                    .tipDes(allTipDes)
+                    .otherDes(allOtherDes)
                     .code(code)
                     .build();
             baseMapper.insert(addOrder) ;
             orderList.add(addOrder);
-        }
+
         map.put("order",orderList);
 
         // 计算排队时间
@@ -99,8 +113,57 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
     }
 
     @Override
-    public List<Order> orderListOfUser(String username) {
-        return baseMapper.getOrderListOfUser(username);
+    public List<OrderVO> orderListOfUser(String username) {
+        List<Order> list =  baseMapper.getOrderListOfUser(username) ;
+        List<OrderVO> orderVOList = new ArrayList<>();
+        Integer counter = 1;
+
+        for (Order order : list) {
+            String allDrinkName = order.getDrinkName();
+            List<DrinkVO> drinks = new ArrayList<>();
+            // 获取某一订单下的所有奶茶
+            for (int i = -1 ; i < allDrinkName.length() ; i = allDrinkName.indexOf("\t",i) + 1){
+                if (i == 0 )
+                    break;
+                else if (i == -1)
+                    i++;
+                if (allDrinkName.indexOf("\t",i) != -1){
+                    Drink drink = iDrinkService.getDrinkByName(allDrinkName.substring(i,allDrinkName.indexOf("\t",i)));
+                    DrinkVO drinkVO = DrinkVO.builder()
+                            .name(drink.getName())
+                            .images(iDrinkImageService.getAllImages(drink.getName()))
+                            .build();
+                    drinks.add(drinkVO);
+                }
+                else {
+                    Drink drink = iDrinkService.getDrinkByName(allDrinkName.substring(i,allDrinkName.indexOf("\t",i)));
+                    DrinkVO drinkVO = DrinkVO.builder()
+                            .name(drink.getName())
+                            .images(iDrinkImageService.getAllImages(drink.getName()))
+                            .build();
+                    drinks.add(drinkVO);
+                }
+            }
+
+            OrderVO orderVO = OrderVO.builder()
+                    .delId(order.getDelId())
+                    .store(order.getStore())
+                    .code(order.getCode())
+                    .drinkNum(order.getDrinkNum())
+                    .drink(drinks)
+                    .id(order.getId())
+                    .isTakeOut(order.getIsTakeOut())
+                    .isFinish(order.getIsFinish())
+                    .otherDes(order.getOtherDes())
+                    .tipDes(order.getTipDes())
+                    .price(order.getPrice())
+                    .username(order.getUsername())
+                    .build();
+
+            orderVOList.add(orderVO);
+        }
+
+        return orderVOList;
     }
 
 }
