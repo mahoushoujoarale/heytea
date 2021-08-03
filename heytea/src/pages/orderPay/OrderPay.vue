@@ -63,7 +63,7 @@ export default {
     for (let item of this.cartList) {
       this.toList.push({
         drinkName: item.info.name,
-        tipDes: '白柚果粒&芋头粒&芋头泥',
+        tipDes: '',
         otherDes: "少糖！！",
         drinkNum: item.count
       });

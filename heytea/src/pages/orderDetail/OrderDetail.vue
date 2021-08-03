@@ -69,7 +69,7 @@ export default {
     .then((res) => {
       // console.log(res);
       this.order = res.data.data[this.$store.getters.getOrderNum];
-      console.log(this.order);
+      // console.log(this.order);
     })
     .catch((err) => {
       console.log(err);
