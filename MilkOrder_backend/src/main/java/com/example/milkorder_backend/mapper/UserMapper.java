@@ -10,4 +10,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserMapper extends BaseMapper<User> {
+    /**
+     * 更新余额
+     * @param balance
+     * @param id
+     */
+    void updateBalance(Integer balance,String id);
 }

@@ -15,12 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 @Slf4j  // 日志
 @Service  // 标记当前类是一个service类，加上该注解会将当前类自动注入到spring容器中，不需要再在applicationContext.xml文件定义bean了
 @Transactional(rollbackFor = Exception.class)
 public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IUserService {
+    @Resource
+    private IUserService iUserService;
     // 用户注册
     @Override
     public User executeRegister(RegisterDTO dto) {
@@ -96,5 +99,25 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
             baseMapper.updateById(user) ;
             return "更改密码成功";
         }
+    }
+
+    // 支付
+    @Override
+    public Integer executePay(String cost, String userName) {
+        User user = iUserService.getUserByUsername(userName);
+        Integer balance = user.getBalance() - Integer.parseInt(cost);
+        if (balance >= 0){
+            baseMapper.updateBalance(balance,user.getId());
+        }
+        return balance;
+    }
+
+    // 充值
+    @Override
+    public Integer executeRecharge(String amount, String userName) {
+        User user = iUserService.getUserByUsername(userName);
+        Integer balance = user.getBalance() + Integer.parseInt(amount);
+        baseMapper.updateBalance(balance,user.getId());
+        return balance;
     }
 }

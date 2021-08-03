@@ -143,4 +143,16 @@ public class UserController {
         List<DelAddress> list = iDelAddressService.getAllAddressOfUser(userName);
         return ApiResult.success(list);
     }
+
+    /**
+     * 充值
+     * @param amount
+     * @param userName
+     * @return
+     */
+    @RequestMapping(value = "/recharge", method = RequestMethod.PUT)
+    public ApiResult<Integer> Recharge(@RequestParam String amount , @RequestHeader(value = JwtUtil.USER_NAME) String userName) {
+        Integer balance = iUserService.executeRecharge(amount,userName) ;
+        return ApiResult.success(balance,"充值成功");
+    }
 }

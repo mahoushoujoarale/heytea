@@ -53,4 +53,12 @@ public class OrderController {
         List<Order> list = iOrderService.orderListOfUser(userName);
         return ApiResult.success(list);
     }
+
+    @RequestMapping(value = "/pay", method = RequestMethod.PUT)
+    public ApiResult<Integer> orderPay(@RequestParam String cost, @RequestHeader(value = JwtUtil.USER_NAME) String userName) {
+        Integer balance =  iUserService.executePay(cost,userName);
+        if (balance < 0)
+            return ApiResult.failed("余额不足，请充值");
+        return ApiResult.success(balance,"支付成功");
+    }
 }

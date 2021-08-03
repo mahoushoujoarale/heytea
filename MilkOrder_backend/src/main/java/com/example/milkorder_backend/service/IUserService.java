@@ -42,4 +42,20 @@ public interface IUserService extends IService<User> {
      */
     String changePassword(LoginDTO dto);
 
+    /**
+     * 支付
+     * @param cost
+     * @param userName
+     * @return
+     */
+    Integer executePay(String cost,String userName);
+
+    /**
+     * 充值
+     * @param amount
+     * @param userName
+     * @return
+     */
+    Integer executeRecharge(String amount, String userName);
+
 }
