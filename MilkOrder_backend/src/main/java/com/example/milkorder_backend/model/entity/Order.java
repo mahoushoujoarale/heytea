@@ -24,14 +24,14 @@ public class Order implements Serializable {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
 
-    @TableField("store_address")
-    private String sAddress;  // 所选店铺
+    @TableField("store")
+    private String store;  // 所选店铺
 
     @TableField("username")
     private String username;  // 下单者用户名
 
-    @TableField("mobile")
-    private String mobile;  // 下单者联系电话
+    @TableField("del_id")
+    private String delId;  // 收货信息的id
 
     @TableField("drink_name")
     private String drinkName;  // 所购奶茶
