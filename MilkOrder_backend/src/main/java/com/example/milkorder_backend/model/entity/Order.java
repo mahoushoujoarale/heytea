@@ -57,7 +57,6 @@ public class Order implements Serializable {
     @TableField("is_take_out")
     private Boolean isTakeOut;   // 自取还是外卖（默认自取）
 
-    @JsonIgnore
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;
 

@@ -53,4 +53,6 @@ public class OrderVO {
 
     private Boolean isTakeOut;   // 自取还是外卖（默认自取）
 
+    private Date createTime;
+
 }

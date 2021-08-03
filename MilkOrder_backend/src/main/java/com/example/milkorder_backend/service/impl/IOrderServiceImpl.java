@@ -158,6 +158,7 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
                     .tipDes(order.getTipDes())
                     .price(order.getPrice())
                     .username(order.getUsername())
+                    .createTime(order.getCreateTime())
                     .build();
 
             orderVOList.add(orderVO);
