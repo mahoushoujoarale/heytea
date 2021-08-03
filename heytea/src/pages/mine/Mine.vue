@@ -75,6 +75,7 @@
         <div class="right">{{item.desc}}<span>❯</span></div>
       </div>
     </div>
+    <button v-if="logged" class="logout" @click="logout()">退 出 登 录</button>
     <div class="bounced" v-if="error">
       <div>{{ error }}</div>
     </div>
@@ -82,7 +83,7 @@
 </template>
 
 <script>
-import Login from './../../components/Login.vue'
+import Login from './login/Login.vue'
 export default {
   name: 'Mine',
   components: {
@@ -91,7 +92,6 @@ export default {
   data() {
     return {
       error: "",
-      logged: false,
       nav_show: false,
       nav_header: "nav_header",
       items: [
@@ -106,28 +106,18 @@ export default {
     }
   },
   methods: {
-    handleScroll() {
-      let scrollTop = document.documentElement.scrollTop
-      if (scrollTop > 50 && scrollTop < 300) {
-        this.nav_show = true;
-        this.nav_header = "nav_header_transition";
-      } else if (scrollTop >= 300) {
-        this.nav_show = true;
-        this.nav_header = "nav_header";
-      } else {
-        this.nav_show = false;
-      }
-    },
     handleClick() {
       this.$refs.login.open();
+    },
+    logout() {
+      this.$store.dispatch('logout');
     }
   },
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll)
+  computed: {
+    logged() {
+      return this.$store.state.isLogin;
+    }
   },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll)
-  }
 }
 </script>
 
@@ -322,7 +312,9 @@ export default {
 }
 #mine .more {
   width: 100%;
-  padding-bottom: 50px;
+  padding-bottom: 30px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0dddd;
 }
 #mine .more .item {
   width: 100%;
@@ -345,6 +337,16 @@ export default {
 }
 #mine .more .item .right span {
   padding-left: 12px;
+}
+#mine .logout {
+  color: #333;
+  font-size: 18px;
+  width: 90%;
+  height: 40px;
+  background-color: rgb(247, 165, 14);
+  border-radius: 20px;
+  margin: 0 5% 50px;
+  border: none;
 }
 #mine .bounced {
   position: relative;

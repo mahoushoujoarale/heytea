@@ -1,8 +1,7 @@
 <template>
     <div id="app">
       <router-view></router-view>
-      <!-- <main-tab-bar v-show="mainIndex"></main-tab-bar> -->
-      <main-tab-bar></main-tab-bar>
+      <main-tab-bar v-show="mainIndex"></main-tab-bar>
     </div>
 </template>
 

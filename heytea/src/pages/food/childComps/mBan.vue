@@ -1,22 +1,21 @@
 <template>
-  <div v-if="isShow">
+  <div>
     <div class="mBan"></div>
     <div class="main">
       <span class="close" @click="closeFn">X</span>
-      <img :src="foodData.imgs[num]" alt="" />
+      <img :src="food['images'][0]" alt="" />
       <div class="text">
-        <div class="name">{{ foodData.foodNames[num] }}</div>
-        <span v-show="foodData.exps1[num]">{{ foodData.exps1[num] }}</span>
-        <span v-show="foodData.exps2[num]">{{ foodData.exps2[num] }}</span>
+        <div class="name">{{ food.name }}</div>
+        <span v-for="tag in food.tags" :key="tag">{{ tag }}</span>
         <p>产品描述</p>
-        <p>{{ foodData.texts[num] }}</p>
+        <p class="desc">{{ food.des }}</p>
       </div>
       <div class="bottom">
-        <div class="price">￥{{ foodData.prices[num] }}</div>
+        <div class="price">￥{{ food.price }}</div>
         <div class="right">
-          <span @click="subFood(i)">-</span>
-          <div>1</div>
-          <span @click="addFood(i)">+</span>
+          <span @click="subFood()">-</span>
+          <div>{{count}}</div>
+          <span @click="addFood()">+</span>
         </div>
       </div>
       <button @click="sure">确定</button>
@@ -27,47 +26,34 @@
 <script>
 export default {
   props: {
-    foodData: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    num: Number,
-    nowTime: String,
+    food: Object,
   },
   data() {
     return {
-      isShow: false,
+      count: 1,
     };
   },
-  mounted() {},
+  // beforeMount() {
+  //   console.log(this.food);
+  // },
   name: "mBan",
   methods: {
     closeFn() {
-      this.isShow = false;
+      this.count = 1;
+      this.$emit("closeMban");
     },
     sure() {
-      this.isShow = false;
-      this.$emit("addCart", this.foodData.prices[this.num]);
+      let foodNew = this.food;
+      foodNew.addCount = this.count;
+      this.$emit("addCart", foodNew);
+      this.$emit("closeMban");
+      this.count = 1;
     },
-    addFood(i) {
-      //this.$store.getters.cartList[i].count++;
+    addFood() {
+      this.count++;
     },
-    subFood(i) {
-      // if(this.$store.getters.cartList[i].count>0){
-      //   this.$store.getters.cartList[i].count--;
-      // }
-
-    },
-  },
-  watch: {
-    nowTime: {
-      handler(newValue, oldValue) {
-        // console.log(newValue, oldValue);
-        // if (newValue !== -1) this.isShow = true;
-        this.isShow = true;
-      },
+    subFood() {
+      if (this.count > 0) this.count--;
     },
   },
 };
@@ -86,7 +72,7 @@ export default {
 }
 .main {
   width: 300px;
-  height: 430px;
+  height: 600px;
   background-color: #fff;
   position: absolute;
   left: 50%;
@@ -113,13 +99,16 @@ export default {
   top: 170px;
   /* border-bottom: 0.2px solid rgb(155, 152, 152); */
 }
+.main .text .desc {
+  max-width: 95%;
+  max-height: 280px;
+  overflow: scroll;
+}
 .main img {
-  width: 150px;
-  margin-top: 20px;
+  width: 80%;
   position: absolute;
-  top: 0;
-  left: 50%;
-  margin-left: -75px;
+  left: 10%;
+  margin-top: 20px;
 }
 .main .name {
   font-size: 15px;

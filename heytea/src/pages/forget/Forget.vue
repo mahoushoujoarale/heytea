@@ -1,4 +1,5 @@
 <template>
+  <header-nav>忘记密码</header-nav>
   <div class="register">
     <div class="logo">
       <img src="./../../assets/imgs/register/logo.jpg" alt="my register img" />
@@ -11,13 +12,13 @@
       /></span>
     </div>
     <div class="input-group">
-      <input type="text" v-model="inputpassword" placeholder="请输入密码" />
+      <input type="password" v-model="inputpassword" placeholder="请输入密码" />
       <span @click="emptyinputpassword($event)" v-if="inputpassword"
         ><img src="./../../assets/imgs/register/delete.svg" alt=""
       /></span>
     </div>
     <div class="input-group">
-      <input type="text" v-model="inputpasswordagain" placeholder="请再次输入密码" />
+      <input type="password" v-model="inputpasswordagain" placeholder="请再次输入密码" />
       <span @click="emptyinputpasswordagain($event)" v-if="inputpasswordagain"
         ><img src="./../../assets/imgs/register/delete.svg" alt=""
       /></span>
@@ -57,8 +58,13 @@
 </template>
 
 <script>
+import axios from './../../request/index.js'
+import HeaderNav from '/src/components/HeaderNav.vue'
 export default {
   name: "Forget",
+  components: {
+    HeaderNav,
+  },
   data() {
     return {
       inputphone: "",
@@ -77,15 +83,12 @@ export default {
     };
   },
   methods: {
-<<<<<<< HEAD
-=======
       bounceError(msg) {
           this.error = msg;
           setTimeout(() => {
           this.error = "";
         }, 2000);
       },
->>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
     // 清空输入框
     emptyinputphone(e) {
       // console.log(e.target.parentNode.parentNode.childNodes[0].value);
@@ -136,14 +139,11 @@ export default {
     validatePhone() {
       // 验证手机号码
       if (!/^1[345678]\d{9}$/.test(this.inputphone)) {
-<<<<<<< HEAD
         this.error = "请填写合法的手机号";
         setTimeout(() => {
           this.error = "";
         }, 2000);
-=======
         this.bounceError("请填写合法的手机号");
->>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
         return false;
       } else {
         this.error = "";
@@ -152,7 +152,6 @@ export default {
     },
     validatepassword() {
         if (this.inputpassword.length < 6 || this.inputpassword.length > 18) {
-<<<<<<< HEAD
             this.error = "密码长度需要在6-18之间"
             setTimeout(() => {
             this.error = "";
@@ -163,12 +162,6 @@ export default {
             setTimeout(() => {
             this.error = "";
             }, 2000);
-=======
-            this.bounceError("密码长度需要在6-18之间");
-            return false;
-        } else if (this.inputpassword !== this.inputpasswordagain) {
-           this.bounceError("两次输入密码不一致");
->>>>>>> 649d61f7ca73d5170d3d48c0b8677c9039116e4b
             return false;
         } else {
             this.error = "";
@@ -178,25 +171,28 @@ export default {
     handleregister() {
       this.error = "";
       if(!this.validatepassword()) return;
-    //   this.$axios
-    //     .post("/v2/register", {
-    //       username: this.inputphone,
-    //       password: "",
-    //       captcha_code: this.verifyvalue,
-    //     })
-    //     .then((res) => {
-    //       // console.log(res);
-    //       // 校验并跳转
-    //       if (this.verifyvalue == "111111") {
-    //         localStorage.setItem("ele_register", true);
-    //         this.$router.push("/");
-    //       } else {
-    //         this.error = "验证码错误";
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       this.error = "验证码错误";
-    //     });
+      axios.post("/user/forget", {
+        password: this.inputpassword,
+        mobile: this.inputphone,
+        })
+        .then((res) => {
+            //console.log(res);
+            this.bounceError(res.data.message);
+            // 校验并跳转
+            if (this.verifyvalue == "111111") {
+            //localStorage.setItem("ele_register", true);
+                if (res.data.code != -1) {
+                  setTimeout(() => {
+                    this.$router.push("/");
+                  }, 3000);
+                }
+            } else {
+                this.bounceError("验证码错误");
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     },
   },
   watch: {
@@ -285,6 +281,7 @@ export default {
 }
 .logo {
   text-align: center;
+  padding-top: 50px;
 }
 .logo img {
   width: 200px;

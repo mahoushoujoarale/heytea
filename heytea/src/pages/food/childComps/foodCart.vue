@@ -1,14 +1,13 @@
 <template>
-  <div class="cart" v-if="num !== -1">
+  <div class="cart" v-if="$store.getters.cartList.length">
     <img
       :class="{ activeImg: 'isActive' }"
-      src="./../../../assets/imgs/food/cart.png"
+      src="/src/assets/imgs/food/cart.png"
       alt=""
       @click="cartImgClick"
     />
     <p>￥{{ allPrice }}</p>
-    <!-- <div @click="$router.push('/orderPay')" class="right">结算</div> -->
-    <div class="right">结算</div>
+    <div class="right" @click="$router.push('/orderpay')">结算</div>
     <div class="cartlists" v-show="isShow">
       <div class="top">
         <div class="t-left">
@@ -19,7 +18,7 @@
           ></span
           ><span>全选</span>
         </div>
-        <div class="t-right">清理购物车</div>
+        <div class="t-right" @click="clearAll">清理购物车</div>
       </div>
       <div class="foods" v-for="(item, i) in payList" :key="i">
         <span
@@ -31,10 +30,10 @@
             }
           "
         ></span>
-        <img :src="item.imgs" alt="" />
+        <div class="imgbox"><img :src="item.info.images[0]" alt="" /></div>
         <div class="text">
-          <div>{{ item.foodName }}</div>
-          <div class="ntwo">￥{{ item.foodPrice }}</div>
+          <div>{{ item.info.name }}</div>
+          <div class="ntwo">￥{{ item.info.price }}</div>
         </div>
         <div class="foods-right">
           <span class="sub" @click="subFood(i)">-</span>
@@ -50,14 +49,7 @@
 export default {
   name: "foodCart",
   props: {
-    foodData: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    num: Number,
-    nowTime: String,
+    food: Object
   },
   data() {
     return {
@@ -71,43 +63,48 @@ export default {
       this.$emit("changeBgc");
     },
     addFood(i) {
-      //this.$store.getters.cartList[i].count++;
+      this.$store.getters.cartList[i].count++;
     },
     subFood(i) {
-      // if(this.$store.getters.cartList[i].count>0){
-      //   this.$store.getters.cartList[i].count--;
-      // }
+      if(this.$store.getters.cartList[i].count>0){
+        this.$store.getters.cartList[i].count--;
+      }
 
     },
     isAllChange() {
       this.isAll = !this.isAll;
     },
-    // isAllSelect() {
-    //   this.isAll = !this.isAll;
-    //   let isAll = this.$store.getters.cartList.find((item) => !item.checked);
-    //   if (isAll) {
-    //     this.$store.getters.cartList.forEach((item) => {
-    //       item.checked = true;
-    //     });
-    //   } else {
-    //     this.$store.getters.cartList.forEach((item) => {
-    //       item.checked = false;
-    //     });
-    //   }
-    // },
+    isAllSelect() {
+      this.isAll = !this.isAll;
+      let isAll = this.$store.getters.cartList.find((item) => !item.checked);
+      if (isAll) {
+        this.$store.getters.cartList.forEach((item) => {
+          item.checked = true;
+        });
+      } else {
+        this.$store.getters.cartList.forEach((item) => {
+          item.checked = false;
+        });
+      }
+    },
+    clearAll() {
+      this.$store.getters.cartList.length = 0;
+    }
   },
   computed: {
     payList() {
-      return //this.$store.getters.cartList;
+      return this.$store.getters.cartList;
     },
     payCount() {
-      return //this.$store.getters.getLength;
+      return this.$store.getters.getLength;
     },
     allPrice() {
       let pri = 0;
-      // for (var item of this.$store.getters.cartList) {
-      //   pri = pri + item.checked * item.count * item.foodPrice;
-      // }
+      for (let item of this.$store.getters.cartList) {
+        pri = pri + item.checked * item.count * item.info.price;
+        // console.log(item.count);
+        // console.log(item.info.price);
+      }
       return pri;
     },
   },
@@ -118,11 +115,14 @@ export default {
 <style scoped>
 .cart {
   position: absolute;
-  bottom: 0;
+  bottom: 50px;
   left: 0;
   width: 100%;
-  height: 100px;
+  height: 50px;
   background-color: rgb(214, 205, 205);
+}
+.cart>p {
+  margin: 0;
 }
 .cart > img {
   position: absolute;
@@ -130,8 +130,6 @@ export default {
   left: 15px;
   border-radius: 100%;
   box-shadow: 3px 3px 3px #888888;
-}
-.activeImg {
 }
 .checkbox {
   display: inline-block;
@@ -141,7 +139,7 @@ export default {
   border-radius: 100%;
 }
 .checkboxActive {
-  background-color: rgb(116, 111, 111);
+  background-color: rgb(226, 128, 36);
 }
 .inp {
   display: inline-block;
@@ -151,7 +149,7 @@ export default {
   border-radius: 100%;
 }
 .inpActive {
-  background-color: rgb(116, 111, 111);
+  background-color: rgb(226, 128, 36);
 }
 .inp {
   float: left;
@@ -161,7 +159,6 @@ export default {
   position: absolute;
   left: 70px;
   display: inline-block;
-  height: 100px;
   line-height: 50px;
   /* line-height: 100px; */
   color: #000;
@@ -169,19 +166,21 @@ export default {
 .right {
   float: right;
   width: 80px;
-  height: 100px;
+  height: 50px;
   line-height: 50px;
   background-color: rgb(226, 128, 36);
   text-align: center;
   color: #fff;
 }
 .cartlists {
-  width: 100%;
+  width: 94%;
   background-color: #fff;
-  position: absolute;
+  position: fixed;
   bottom: 100px;
   left: 0;
-  padding: 10px;
+  padding: 10px 3%;
+  max-height: 300px;
+  overflow: scroll;
 }
 .cartlists .top {
   height: 30px;
@@ -205,10 +204,16 @@ export default {
   font-size: 15px;
   color: #000;
 }
-.foods img {
+.foods .imgbox {
   width: 60px;
   height: 60px;
   float: left;
+  overflow: hidden;
+}
+.foods .imgbox > img {
+  width: 120px;
+  height: 60px;
+  margin-left: -30px;
 }
 .foods .text {
   float: left;

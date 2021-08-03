@@ -6,8 +6,8 @@
     <div class="nav">
       <div class="nav-left">
         <span class="star"></span>
-        <div @click="$router.push('/place')">美年广场GO店 ></div>
-        <p>距离您15.4km</p>
+        <div @click="$router.push('/place')">武汉K11 Select店 ></div>
+        <p>距离您3.1km</p>
       </div>
       <div class="nav-right">
         <div class="rl">自取</div>
@@ -50,6 +50,7 @@ export default {
   color: rgb(170, 170, 170);
   font-size: 10px;
   margin-left: 5px;
+  margin-bottom: 0;
 }
 .nav-right {
   float: right;
