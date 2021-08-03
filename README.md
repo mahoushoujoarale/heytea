@@ -15,8 +15,8 @@
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
+1.  MilkOrder_backend 是后端，SpringBoot+Mybatis
+2.  heytea 是前端，vue。yarn dev 启动
 3.  xxxx
 
 #### 参与贡献
