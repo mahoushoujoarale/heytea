@@ -8,6 +8,12 @@
         where name = #{name} ;
     </select>
 
+    <select id="getStoreById" resultType="com.example.milkorder_backend.model.entity.Store">
+        select *
+        from store
+        where id = #{id} ;
+    </select>
+
     <select id="getStoreList" resultType="com.example.milkorder_backend.model.entity.Store">
         select *
         from store

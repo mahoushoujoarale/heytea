@@ -5,10 +5,7 @@ import com.example.milkorder_backend.mapper.OrderMapper;
 import com.example.milkorder_backend.mapper.TipMapper;
 import com.example.milkorder_backend.model.dto.OneOrderDTO;
 import com.example.milkorder_backend.model.dto.OrderDTO;
-import com.example.milkorder_backend.model.entity.Drink;
-import com.example.milkorder_backend.model.entity.Order;
-import com.example.milkorder_backend.model.entity.Tip;
-import com.example.milkorder_backend.model.entity.User;
+import com.example.milkorder_backend.model.entity.*;
 import com.example.milkorder_backend.model.vo.DrinkVO;
 import com.example.milkorder_backend.model.vo.OrderVO;
 import com.example.milkorder_backend.service.*;
@@ -32,6 +29,8 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
     @Resource
     private IUserService iUserService;
     @Resource
+
+
     private IDrinkService iDrinkService;
     @Resource
     private ITipService iTipService;
@@ -101,7 +100,7 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
         map.put("order",orderList);
 
         // 计算排队时间
-        List<Order> noFinishedOrder = baseMapper.getAllFinishedOrder();
+        List<Order> noFinishedOrder = baseMapper.getNoFinishedOrderOfStore(dto.getStore());
         if (ObjectUtils.isEmpty(noFinishedOrder)){
             map.put("numOfLine",0);
         }
@@ -113,6 +112,7 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
         return map;
     }
 
+    // 全部历史订单
     @Override
     public List<OrderVO> orderListOfUser(String username) {
         List<Order> list =  baseMapper.getOrderListOfUser(username) ;
@@ -182,5 +182,6 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
 
         return orderVOList;
     }
+
 
 }

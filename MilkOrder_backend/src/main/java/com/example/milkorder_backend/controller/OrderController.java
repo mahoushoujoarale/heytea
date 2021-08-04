@@ -9,6 +9,7 @@ import com.example.milkorder_backend.model.entity.Order;
 import com.example.milkorder_backend.model.entity.User;
 import com.example.milkorder_backend.model.vo.OrderVO;
 import com.example.milkorder_backend.service.IOrderService;
+import com.example.milkorder_backend.service.IStoreService;
 import com.example.milkorder_backend.service.IUserService;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,8 @@ public class OrderController {
     private IOrderService iOrderService;
     @Resource
     private IUserService iUserService;
+    @Resource
+    private IStoreService iStoreService;
     /**
      * 发起订单
      * @param dto
@@ -33,7 +36,9 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ApiResult<Map<String, Object>> orderAdd(@Valid @RequestBody OrderDTO dto, @RequestHeader(value = JwtUtil.USER_NAME) String userName) {
+    public ApiResult<Map<String, Object>> orderAdd(@Valid @RequestBody OrderDTO dto,@RequestHeader(value = JwtUtil.USER_NAME) String userName) {
+        if (!iStoreService.isStoreExit(dto.getStore()))
+            return ApiResult.failed("店铺不存在");
         Map map = iOrderService.executeAddOrder(dto, userName);
         Map<String, Object> resMap = new HashMap<>(16);
         if (ObjectUtils.isEmpty(map))

@@ -3,10 +3,10 @@
 <mapper namespace="com.example.milkorder_backend.mapper.OrderMapper">
 
 
-    <select id="getAllFinishedOrder" resultType="com.example.milkorder_backend.model.entity.Order">
+    <select id="getNoFinishedOrderOfStore" resultType="com.example.milkorder_backend.model.entity.Order">
         select *
         from drink_order
-        where is_finish = false ;
+        where is_finish = false and store = #{store} ;
     </select>
 
     <select id="getOrderListOfUser" resultType="com.example.milkorder_backend.model.entity.Order">

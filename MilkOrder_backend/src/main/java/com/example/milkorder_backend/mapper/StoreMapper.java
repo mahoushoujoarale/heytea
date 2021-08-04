@@ -20,4 +20,11 @@ public interface StoreMapper extends BaseMapper<Store> {
      * @return
      */
     List<Store> getStoreList();
+
+    /**
+     * 通过id查店铺
+     * @param id
+     * @return
+     */
+    Store getStoreById(String id);
 }

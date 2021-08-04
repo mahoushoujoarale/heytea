@@ -20,4 +20,8 @@ public interface IStoreService extends IService<Store> {
      */
     List<Store> getStoreList();
 
+    /**
+     * 查询店铺id是否存在
+     */
+    boolean isStoreExit(String id);
 }
