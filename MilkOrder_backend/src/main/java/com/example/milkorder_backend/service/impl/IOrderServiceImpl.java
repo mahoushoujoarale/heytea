@@ -29,14 +29,13 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
     @Resource
     private IUserService iUserService;
     @Resource
-
-
     private IDrinkService iDrinkService;
     @Resource
     private ITipService iTipService;
     @Resource
     private IDrinkImageServiceImpl iDrinkImageService;
-
+    @Resource
+    private  IStoreService iStoreService;
 
     // 1. 发起订单
     @Override
@@ -95,6 +94,7 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
                     .code(code)
                     .build();
             baseMapper.insert(addOrder) ;
+            addOrder.setStore(iStoreService.getStoreNameById(dto.getStore()));
             orderList.add(addOrder);
 
         map.put("order",orderList);
@@ -163,7 +163,7 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
 
             OrderVO orderVO = OrderVO.builder()
                     .delId(order.getDelId())
-                    .store(order.getStore())
+                    .store(iStoreService.getStoreNameById(order.getStore()))
                     .code(order.getCode())
                     .drinkNum(number)
                     .drink(drinks)

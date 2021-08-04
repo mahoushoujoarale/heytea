@@ -49,4 +49,13 @@ public class IStoreServiceImpl extends ServiceImpl<StoreMapper, Store> implement
             return  false;
         return true;
     }
+
+    // 由id查名称
+    @Override
+    public String getStoreNameById(String id) {
+        Store store = baseMapper.getStoreById(id);
+        if (ObjectUtils.isEmpty(store))
+            return null;
+        return store.getName();
+    }
 }

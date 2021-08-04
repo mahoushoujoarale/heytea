@@ -24,4 +24,9 @@ public interface IStoreService extends IService<Store> {
      * 查询店铺id是否存在
      */
     boolean isStoreExit(String id);
+
+    /**
+     * 由id查名称
+     */
+    String getStoreNameById(String id);
 }
