@@ -37,6 +37,9 @@
       <div>合计<span>¥ {{$store.getters.getAllPrice}}</span></div>
       <button @click="pay">支付</button>
     </div>
+    <div class="bounced" v-if="error">
+            <div>{{ error }}</div>
+        </div>
   </div>
 </template>
 
@@ -52,6 +55,7 @@ export default {
     return {
       cartList: [],
       toList:[],
+      error: '',
     }
   },
   beforeMount() {
@@ -59,24 +63,33 @@ export default {
     for (let item of this.cartList) {
       this.toList.push({
         drinkName: item.info.name,
-        tipDes: '白柚果粒&芋头粒&芋头泥',
+        tipDes: '',
         otherDes: "少糖！！",
         drinkNum: item.count
       });
-      // console.log(this.toList);
-      // console.log(this.$store.getters.getUser.address[0].id);
     }
+    // console.log(this.$store.getters.getUser);
   },
   methods: {
+    bounceError(msg) {
+          this.error = msg;
+          setTimeout(() => {
+              this.error = "";
+          }, 2000);
+      },
     pay() {
       axios.post('/order/add', {
         store: "武汉K11 Select店",
-        delId: this.$store.getters.getUser.address[0].id,
+        delId: this.$store.getters.getUser.address[this.$store.getters.getAddrNum].id,
         isTakeOut: true,
         products: this.toList
       })
       .then((res) => {
-        console.log(res);
+        this.$store.getters.cartList.length = 0;
+        this.bounceError(res.data.message);
+        setTimeout(() => {
+          this.$router.push("/order");
+        }, 1000)
       })
       .catch((err) => {
         console.log(err);
@@ -275,10 +288,27 @@ export default {
 #pay .footer > button {
     font-size: 15px;
     color: white;
-    background-color: rgb(240, 171, 116);
+    background-color: orange;
     border: none;
     float: right;
     margin-right: 15px;
     padding: 10px;
+}
+#pay .bounced {
+  position: fixed;
+  width: 150px;
+  height: 35px;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  margin: 0 auto;
+  bottom: 200px;
+  left: 125px;
+  border-radius: 10px;
+}
+#pay .bounced div {
+  line-height: 35px;
+  color: white;
+  text-align: center;
+  font-size: 12px;
 }
 </style>

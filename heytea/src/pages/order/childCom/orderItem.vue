@@ -1,25 +1,25 @@
 <template>
     <div class="order-content" style="padding: 0 8px;">
-        <div class="content-header" @click="$router.push('/orderdetail')">
+        <div class="content-header">
             <div class="header-left">
-                <div class="title">悠方购物中心</div>
-                <div class="time">2020-10-22 16：19：20</div>
+                <div class="title">{{food.store}}</div>
+                <div class="time">{{food.createTime}}</div>
             </div>
             <div class="header-right">
-                <div class="complete" >{{status?"已完成":"已取消"}}</div>
+                <div class="complete" >{{food.isFinish?"已完成":"已取消"}}</div>
             </div>
         </div>
-        <div class="content-middle" @click="$router.push('/orderdetail')">
+        <div class="content-middle">
             <div class="middle-left">
-                <img src="/src/assets/imgs/order/ice-img.png"/>
+                <img :src="food.drink[0].images[0]"/>
             </div>
             <div class="middle-right">
-                <div class="price">￥ 18</div>
-                <div class="num">共 1 件</div>
+                <div class="price">￥ {{food.price}}</div>
+                <div class="num">共 {{food.drinkNum}} 件</div>
             </div>
         </div>
         <div class="content-btn">
-            <div class="invoice" @click="$router.push('/orderdetail')">开发票</div>
+            <div class="invoice">开发票</div>
             <div class="again" @click="$router.push('/food')">再来一单</div>
         </div>
     </div>
@@ -29,8 +29,8 @@
     export default {
         name: "orderItem",
         props:{
-            status:false
-        }
+            food: Object,
+        },
     }
 </script>
 
@@ -76,11 +76,15 @@
     }
     .content-middle .middle-left{
         float: left;
+        width: 80px;
+        height: 80px;
+        overflow: hidden;
     }
     .content-middle .middle-left img{
         display: inline-block;
-        width: 80px;
+        width: 140px;
         height: 80px;
+        margin-left: -30px;
     }
     .content-middle .middle-right{
         float: right;

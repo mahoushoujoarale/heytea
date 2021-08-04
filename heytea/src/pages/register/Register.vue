@@ -92,6 +92,7 @@ export default {
       inputpassword: "",
       inputpasswordagain: "",
       verifyvalue: "",
+      verify: "",
       // 最开始禁用
       verifydisabled: true,
       registerdisabled: true,
@@ -139,9 +140,18 @@ export default {
         // 倒计时
         this.validateBth();
         // 发送请求
-        // this.$axios.post("/v1/captchas").then((res) => {
-        //   // console.log(res);
-        // });
+        axios.get('/user/valicode', {
+          params: {
+            mobile: this.inputphone
+          }
+        })
+        .then((res) => {
+          console.log(res);
+          this.verify = res.data.data.valicode;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
       }
     },
     validateBth() {
@@ -197,7 +207,7 @@ export default {
             //console.log(res);
             this.bounceError(res.data.message);
             // 校验并跳转
-            if (this.verifyvalue == "111111") {
+            if (this.verifyvalue === this.verify) {
             //localStorage.setItem("ele_register", true);
                 if (res.data.code != -1) {
                   setTimeout(() => {

@@ -4,7 +4,9 @@
         <!-- <div class="slider">
             <img src="/src/assets/imgs/shop/shop_slider.png" alt="">
         </div> -->
-        <swiper class="slider" height="411px" :options="swiperOption" :list="swiperList" effect="normal" @onClick="handleSwiperClick"></swiper>
+        <div class="slider">
+            <swiper height="411px" :options="swiperOption" :list="swiperList" effect="normal" @onClick="handleSwiperClick"></swiper>
+        </div>
         <div class="banner1">
             <div class="left">
                 <p>喜茶瓶装</p>

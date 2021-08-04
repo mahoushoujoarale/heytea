@@ -9,7 +9,7 @@
     <div class="second">
       <div class="second_first">
         <div class="left">
-          <p>悠方购物中心点</p>
+          <p>{{order.store}}</p>
           <div>交子大道300号"悠方购物中心"一层132/133/136/137号</div>
         </div>
         <img
@@ -17,34 +17,34 @@
           class="right"
         />
       </div>
-      <div class="second_second">
+      <div class="second_second" v-for="(item, index) in order.drink" :key="index">
         <div class="left">
-          <img src="/src/assets/imgs/orderDetail/orderDetail_food.png" alt="" />
-          <div>芒芒甘冰露棒</div>
+          <div class="imgbox"><img :src="item.images[0]" alt="" /></div>
+          <div class="desc">{{item.name}}</div>
         </div>
         <div class="right">
-          <span>¥ 18</span>
-          <div>x1</div>
+          <span>¥ {{item.price}}</span>
+          <div>x{{item.num}}</div>
         </div>
       </div>
       <div class="second_third">
-        <div class="left">商品总价</div>
-        <div class="right">¥ 18</div>
+        <div class="left">商品总价(含小料)</div>
+        <div class="right">¥ {{order.price}}</div>
       </div>
       <div class="second_fourth">
-        <div>共一件商品，合计<span>¥ 18</span></div>
+        <div>共{{order.drinkNum}}件商品，合计<span>¥ {{order.price}}</span></div>
       </div>
     </div>
     <div class="third">
       <p>订单信息</p>
-      <div>下单时间: <span>11/02 19:19</span></div>
-      <div>取茶号: <span>8193</span></div>
+      <div>下单时间: <span>{{order.createTime}}</span></div>
+      <div>取茶号: <span>{{order.code}}</span></div>
       <div>
         订单编号:
-        <span>019328129048472948023808319</span>
+        <span>{{order.id}}</span>
         <button>复制</button>
       </div>
-      <div>备注信息: <span>不打包</span></div>
+      <div>备注信息: <span>{{order.otherDes}}</span></div>
     </div>
 
     <div class="footer">如需退款，请致电门店</div>
@@ -52,20 +52,37 @@
 </template>
 
 <script>
-import HeaderNav from '/src/components/HeaderNav.vue'
+import HeaderNav from '/src/components/HeaderNav.vue';
+import axios from '/src/request/index.js';
 export default {
   name: "OrderDetail",
   components: {
     HeaderNav,
-  }
+  },
+  data() {
+    return {
+      order: {},
+    }
+  },
+  beforeMount() {
+    axios.get('/order/list')
+    .then((res) => {
+      // console.log(res);
+      this.order = res.data.data[this.$store.getters.getOrderNum];
+      // console.log(this.order);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  },
 };
 </script>
 
 <style scoped>
 #order_detail {
   width: 90%;
-  min-height: 100%;
-  padding: 64px 5%;
+  min-height: 95%;
+  padding: 64px 5% 0;
   text-align: center;
   background-color: rgb(242, 242, 242);
 }
@@ -94,7 +111,7 @@ export default {
   background-color: white;
   margin-top: 20px;
   padding: 5px 5%;
-  height: 264px;
+  /* height: 264px; */
   width: 90%;
 }
 #order_detail .second .second_first {
@@ -131,14 +148,22 @@ export default {
   float: left;
   position: relative;
 }
-#order_detail .second .second_second .left > img {
+#order_detail .second .second_second .left .imgbox {
   width: 100px;
   height: 100px;
   margin-right: 10px;
+  display: inline-block;
+  overflow: hidden;
 }
-#order_detail .second .second_second .left > div {
+#order_detail .second .second_second .left .imgbox > img {
+  width: 160px;
+  height: 100px;
+  margin: 0 -30px;
+}
+#order_detail .second .second_second .left .desc {
   position: absolute;
   top: 10px;
+  left: 110px;
   min-width: 100px;
   color: #333333;
   display: inline-block;

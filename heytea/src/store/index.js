@@ -9,18 +9,23 @@ const state = {
     user: {},
     place: [],
     token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
-    isLogin: false,
-    addrNum: -1,
+    isLogin: localStorage.getItem('token') ? true : false,
+    addrNum: 0,
+    orderNum: 0,
 }
 
-axios.get('./store/list')
-.then((res) => {
-    state.place = res.data.data.store;
-    // console.log(res.data);
-})
-.catch((err) => {
-    console.log(err);
-})
+state.user.info = state.isLogin ? localStorage.getItem('info') : {};
+state.user.address = state.isLogin ? localStorage.getItem('address') : {};
+setTimeout(() => {
+    axios.get('./store/list')
+    .then((res) => {
+        state.place = res.data.data.store;
+        // console.log(res.data);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+}, 1000);
 
 const store = createStore({
     state,
