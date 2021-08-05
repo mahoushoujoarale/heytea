@@ -29,6 +29,7 @@ public class OrderController {
     private IUserService iUserService;
     @Resource
     private IStoreService iStoreService;
+
     /**
      * 发起订单
      * @param dto
@@ -60,11 +61,31 @@ public class OrderController {
         return ApiResult.success(list);
     }
 
+    /**
+     * 支付
+     * @param cost
+     * @param userName
+     * @return
+     */
     @RequestMapping(value = "/pay", method = RequestMethod.PUT)
     public ApiResult<Integer> orderPay(@RequestParam String cost, @RequestHeader(value = JwtUtil.USER_NAME) String userName) {
         Integer balance =  iUserService.executePay(cost,userName);
         if (balance < 0)
             return ApiResult.failed("余额不足，请充值");
         return ApiResult.success(balance,"支付成功");
+    }
+
+    /**
+     * 提前获取等待时间
+     * @param store
+     * @return
+     */
+    @RequestMapping(value = "/wait_time")
+    public ApiResult<Map<String,?>> getWaitTime(@RequestParam String store) {
+        if (!iStoreService.isStoreExit(store))
+            return ApiResult.failed("店铺不存在");
+        Map<String,Integer> map = new HashMap<>();
+        map.put("waitTime",iOrderService.getWaitTimeOfStore(store));
+        return ApiResult.success(map);
     }
 }

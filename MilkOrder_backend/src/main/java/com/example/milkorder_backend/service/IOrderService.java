@@ -25,5 +25,10 @@ public interface IOrderService extends IService<Order> {
      */
     List<OrderVO> orderListOfUser(String username) ;
 
-
+    /**
+     * 获取某一店铺的等待时间
+     * @param store
+     * @return
+     */
+    Integer getWaitTimeOfStore(String store);
 }

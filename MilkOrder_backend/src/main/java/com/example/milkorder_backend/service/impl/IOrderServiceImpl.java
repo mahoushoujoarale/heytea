@@ -183,5 +183,14 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
         return orderVOList;
     }
 
-
+    @Override
+    public Integer getWaitTimeOfStore(String store) {
+        // 计算排队时间
+        List<Order> noFinishedOrder = baseMapper.getNoFinishedOrderOfStore(store);
+        if (ObjectUtils.isEmpty(noFinishedOrder)){
+            return 1;
+        }
+        else
+           return noFinishedOrder.size();
+    }
 }
