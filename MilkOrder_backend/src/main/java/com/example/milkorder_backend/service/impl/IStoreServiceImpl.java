@@ -40,4 +40,22 @@ public class IStoreServiceImpl extends ServiceImpl<StoreMapper, Store> implement
     public List<Store> getStoreList() {
         return baseMapper.getStoreList();
     }
+
+    // 查询店铺是否存在
+    @Override
+    public boolean isStoreExit(String id) {
+        Store store = baseMapper.getStoreById(id);
+        if (ObjectUtils.isEmpty(store))
+            return  false;
+        return true;
+    }
+
+    // 由id查名称
+    @Override
+    public String getStoreNameById(String id) {
+        Store store = baseMapper.getStoreById(id);
+        if (ObjectUtils.isEmpty(store))
+            return null;
+        return store.getName();
+    }
 }

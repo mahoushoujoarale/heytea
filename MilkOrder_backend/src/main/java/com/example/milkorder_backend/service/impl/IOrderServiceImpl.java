@@ -5,10 +5,7 @@ import com.example.milkorder_backend.mapper.OrderMapper;
 import com.example.milkorder_backend.mapper.TipMapper;
 import com.example.milkorder_backend.model.dto.OneOrderDTO;
 import com.example.milkorder_backend.model.dto.OrderDTO;
-import com.example.milkorder_backend.model.entity.Drink;
-import com.example.milkorder_backend.model.entity.Order;
-import com.example.milkorder_backend.model.entity.Tip;
-import com.example.milkorder_backend.model.entity.User;
+import com.example.milkorder_backend.model.entity.*;
 import com.example.milkorder_backend.model.vo.DrinkVO;
 import com.example.milkorder_backend.model.vo.OrderVO;
 import com.example.milkorder_backend.service.*;
@@ -37,7 +34,8 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
     private ITipService iTipService;
     @Resource
     private IDrinkImageServiceImpl iDrinkImageService;
-
+    @Resource
+    private  IStoreService iStoreService;
 
     // 1. 发起订单
     @Override
@@ -96,12 +94,13 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
                     .code(code)
                     .build();
             baseMapper.insert(addOrder) ;
+            addOrder.setStore(iStoreService.getStoreNameById(dto.getStore()));
             orderList.add(addOrder);
 
         map.put("order",orderList);
 
         // 计算排队时间
-        List<Order> noFinishedOrder = baseMapper.getAllFinishedOrder();
+        List<Order> noFinishedOrder = baseMapper.getNoFinishedOrderOfStore(dto.getStore());
         if (ObjectUtils.isEmpty(noFinishedOrder)){
             map.put("numOfLine",0);
         }
@@ -113,6 +112,7 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
         return map;
     }
 
+    // 全部历史订单
     @Override
     public List<OrderVO> orderListOfUser(String username) {
         List<Order> list =  baseMapper.getOrderListOfUser(username) ;
@@ -163,7 +163,7 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
 
             OrderVO orderVO = OrderVO.builder()
                     .delId(order.getDelId())
-                    .store(order.getStore())
+                    .store(iStoreService.getStoreNameById(order.getStore()))
                     .code(order.getCode())
                     .drinkNum(number)
                     .drink(drinks)
@@ -182,5 +182,6 @@ public class IOrderServiceImpl extends ServiceImpl<OrderMapper, Order> implement
 
         return orderVOList;
     }
+
 
 }
