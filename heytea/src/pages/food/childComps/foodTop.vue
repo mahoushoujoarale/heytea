@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div id="foodtop">
     <div class="h-input">
       <input type="text" placeholder="搜索文字" />
     </div>
     <div class="nav">
       <div class="nav-left">
         <span class="star"></span>
-        <div @click="$router.push('/place')">武汉K11 Select店 ></div>
+        <div @click="$router.push('/place')">{{$store.getters.getPlace.name}} ></div>
         <p>距离您3.1km</p>
       </div>
       <div class="nav-right">
@@ -25,6 +25,13 @@ export default {
 </script>
 
 <style scoped>
+#foodtop {
+  width: 100%;
+  height: 121px;
+  position: fixed;
+  z-index: 1;
+  background-color: #fff;
+}
 .h-input input {
   background-color: rgb(224, 220, 220);
   margin-left: 20px;

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import store from '/src/store/index.js';
-import router from '/src/router/index.js';
 
 axios.defaults.baseURL = 'http://120.79.152.10:8000';
 axios.defaults.timeout = 10000;

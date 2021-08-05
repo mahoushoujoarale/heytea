@@ -280,13 +280,14 @@ export default {
     color: #B6B6B6;
 }
 #shop .new .banner {
-    width: 383px;
+    width: 100%;
     height: 166px;
     padding-top: 15px;
     clear: both;
     border-radius: 6px;
 }
 #shop .new .banner img {
+    width: 100%;
     box-shadow: 0 0 5px #b9b5b5;
 }
 #shop .new .item {
@@ -299,11 +300,12 @@ export default {
     box-shadow: 0 0 5px #b9b5b5;
 }
 #shop .new .item .left {
+    width: 45%;
     margin-left: 3px;
     float: left;
 }
 #shop .new .item .left img {
-    width: 152px;
+    width: 100%;
     height: 152px;
 }
 #shop .new .item .right {

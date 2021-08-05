@@ -1,15 +1,13 @@
 <template>
-  <div class="foods">
-    <div class="food-content">
-      <div
-        v-for="(item, i) in classList"
-        :key="i"
-        class="foodItem"
-        :class="{ foodItemActive: currentIndex === i }"
-        @click="change(i)"
-      >
-        <p>{{ item.name }}</p>
-      </div>
+  <div class="fooditems">
+    <div
+      v-for="(item, index) in classList"
+      :key="index"
+      class="foodItem"
+      :class="{ foodItemActive: currentIndex === index }"
+      @click="change(index)"
+    >
+      <p>{{ item.name }}</p>
     </div>
   </div>
 </template>
@@ -30,38 +28,37 @@ export default {
   },
   data() {
     return {
-      currentIndex: 0,
       classList: [],
     };
   },
+  computed: {
+    currentIndex() {
+      return this.$store.getters.getScrollNum;
+    }
+  },
   methods: {
-    change(i) {
-      this.currentIndex = i;
-      this.$emit("scrollToWant", i);
+    change(index) {
+      this.$store.commit('SETCLASSNUM', index);
     },
   },
 };
 </script>
 
 <style scoped>
-.foods {
-  text-align: center;
-  width: 70px;
+.fooditems {
+  position: fixed;
+  top: 121px;
+  bottom: 0;
+  left: 0;
+  right: 80%;
+  padding-bottom: 100px;
   font-size: 10px;
   color: #8f8c8c;
-}
-.food-content {
-  position: absolute;
-  width: 80px;
-  top: 115px;
-  bottom: 50px;
-  padding-bottom: 50px;
-  overflow: scroll;
   background-color: rgba(0, 0, 0, 0.05);
+  overflow: scroll;
 }
 .foodItem {
-  width: 70px;
-  height: 60px;
+  width: 94%px;
   line-height: 60px;
   text-align: left;
   padding-left: 5px;

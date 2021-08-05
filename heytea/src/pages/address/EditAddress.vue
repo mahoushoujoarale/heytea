@@ -43,9 +43,10 @@ export default {
         HeaderNav,
     },
     beforeMount() {
-        // this.addressForm = this.$store.getters.getUser.address[this.$route.query.index];
-        this.nowAddress = this.$store.getters.getUser['address'][this.$route.query.index];
-        this.addressForm = {
+        axios.get('/address/list')
+        .then((res) => {
+            this.nowAddress = res.data.data[this.$store.getters.getAddrNum];
+            this.addressForm = {
             id: this.nowAddress.id,
             name: this.nowAddress.linkman,
             sex: this.nowAddress.isMale === true ? 'man' : 'woman',
@@ -53,6 +54,10 @@ export default {
             address: this.nowAddress.address,
             doorNum: this.nowAddress.detail
         }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
     },
     data() {
         return {
@@ -71,8 +76,6 @@ export default {
     methods: {
         sure() {
             if (this.validateElse() && this.validatePhone()) {
-                this.bounceError("编辑成功");
-                // this.$store.getters.getUser.address[this.$route.query.index] = this.addressForm;
                 axios.put(`/address/update?id=${this.addressForm.id}`, {
                     linkman: this.addressForm.name,
                     isMale: this.addressForm.sex === 'man' ? true : false,
@@ -81,7 +84,7 @@ export default {
                     detail: this.addressForm.doorNum
                 })
                 .then((res) => {
-                    // this.addressList = res.data.data;
+                    this.bounceError("编辑成功");
                 })
                 .catch((err) => {
                     console.log(err);
@@ -90,15 +93,13 @@ export default {
             }
         },
         remove() {
-            this.$store.getters.getUser.address.splice(this.$route.query.index, 1);
-            this.bounceError('删除地址成功');
             axios.delete('/address/delete', {
                     params: {
                         id: this.addressForm.id
                     }
                 })
                 .then((res) => {
-                    // this.addressList = res.data.data;
+                    this.bounceError('删除地址成功');
                 })
                 .catch((err) => {
                     console.log(err);
@@ -118,7 +119,7 @@ export default {
         },
         validatePhone() {
             // 验证手机号码
-            if (!/^1[345678]\d{9}$/.test(this.addressForm.phone)) {
+            if (!/^1[3456789]\d{9}$/.test(this.addressForm.phone)) {
                 this.bounceError("请填写合法的手机号");
                 return false;
             } else {

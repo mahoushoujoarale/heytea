@@ -28,7 +28,7 @@ const routes = [
     {path: '/orderdetail', component: OrderDetail},
     {path: '/orderpay', component: OrderPay},
     {path: '/selectaddress', component: SelectAddress},
-    {path: '/editaddress', name: 'editaddress', component: EditAddress, props: {index: true}},
+    {path: '/editaddress', component: EditAddress},
     {path: '/addaddress', component: AddAddress},
     {path: '/place', component: Place},
     {path: '/charge', component: Charge},

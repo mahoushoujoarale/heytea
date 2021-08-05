@@ -15,13 +15,19 @@
             </div>
         </div>
         <img class="map" src="/src/assets/imgs/place/map.jpg" alt="">
-        <div class="item"><place-item v-for="place of $store.getters.getPlace" :key="place" :place="place"></place-item></div>
+        <div class="item">
+            <place-item v-for="(place, index) of placeList"
+            :key="place"
+            :class="{ isActive: placeNum === index }"
+            :place="place"
+            @click="selectPlace(index)">
+            </place-item></div>
     </div>
 </template>
 
 <script>
 import PlaceItem from './placeItem/PlaceItem.vue';
-import HeaderNav from '/src/components/HeaderNav.vue'
+import HeaderNav from '/src/components/HeaderNav.vue';
 export default {
     name: 'Place',
     components: {
@@ -31,7 +37,11 @@ export default {
     data() {
         return {
             isSelected: true,
+            placeNum: 0,
         }
+    },
+    beforeMount() {
+        this.placeList = this.$store.getters.getPlaceList;
     },
     methods: {
         selectFirst() {
@@ -39,6 +49,10 @@ export default {
         },
         selectSecond() {
             this.isSelected = false;
+        },
+        selectPlace(index) {
+            this.placeNum = index;
+            this.$store.commit('SETPLACE', this.placeList[index]);
         }
     }
 }
@@ -105,5 +119,8 @@ export default {
     width: 100%;
     height: 50%;
     overflow: scroll;
+}
+.isActive {
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
 }
 </style>

@@ -19,34 +19,83 @@
 </template>
 
 <script>
-import axios from '/src/request/index.js';
+import axios from "/src/request/index.js";
 export default {
   name: "foods",
-  created() {
-    axios.get('/cla/list', {})
-    .then((res) => {
+  beforeMount() {
+    axios
+      .get("/cla/list", {})
+      .then((res) => {
         this.classList = res.data.data.class;
-    })
-    .catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
-    });
-    axios.get('/drink/list', {})
-    .then((res) => {
+      });
+    axios
+      .get("/drink/list", {})
+      .then((res) => {
         this.foodList = res.data.data.drink;
         for (let item1 of this.classList) {
-          item1.drinks = this.foodList.filter(item => item.cla === item1.name);
-        };
-    })
-    .catch((err) => {
+          item1.drinks = this.foodList.filter(
+            (item) => item.cla === item1.name
+          );
+        }
+      })
+      .catch((err) => {
         console.log(err);
-    })
+      });
+      window.addEventListener('scroll', () => {
+        this.scrollHeight = document.documentElement.scrollTop || document.body.scrollTop;
+        for (let i = 0; i < this.jumpList.length - 1; i++) {
+          if(this.scrollHeight >= this.jumpList[i] && this.scrollHeight < this.jumpList[i + 1]) {
+            this.scrollNum = i;
+          }
+        }
+        if (this.scrollHeight >= this.jumpList[this.jumpList.length - 1]) {
+          this.scrollNum = this.jumpList.length - 1;
+        }
+        this.$store.commit('SETSCROLLNUM', this.scrollNum);
+      });
+  },
+  updated() {
+    let index = 0;
+    for (let item of document.getElementsByClassName("cla")) {
+      this.jumpList[index++] = item.offsetTop;
+    }
   },
   data() {
     return {
-      highs: [],
       classList: [],
       foodList: [],
+      jumpList: [],
+      scrollHeight:0,
+      scrollNum: 0,
     };
+  },
+  computed: {
+    classNum() {
+      return this.$store.getters.getClassNum;
+    },
+  },
+  watch: {
+    classNum: function() {
+      let total = this.jumpList[this.classNum];
+      document.body.scrollTo({
+        top: total,
+        left: 0,
+        behavior: 'smooth'
+        });
+      document.documentElement.scrollTo({
+        top: total,
+        left: 0,
+        behavior: 'smooth'
+        });
+      window.scrollTo({
+        top: total,
+        left: 0,
+        behavior: 'smooth'
+        });
+    },
   },
   methods: {
     add(food) {
@@ -58,8 +107,13 @@ export default {
 
 <style scoped>
 .foods {
-  /* padding: 0, 5px, 50px, 0; */
-  margin-left: 15px;
+  position: absolute;
+  top: 121px;
+  /* bottom: 0; */
+  right: 0;
+  left:20%;
+  padding-bottom: 50px;
+  overflow: scroll;
 }
 .foods > img {
   width: 100%;

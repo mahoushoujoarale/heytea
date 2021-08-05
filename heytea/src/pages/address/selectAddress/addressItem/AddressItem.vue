@@ -4,7 +4,7 @@
             <p>{{address.linkman}}（{{sex}}） {{address.mobile}}</p>
             <div>{{address.address}} {{address.detail}}</div>
         </div>
-        <img src="/src/assets/imgs/address/edit.png" alt="" @click="$router.push({name: 'editaddress', query: {index}})" >
+        <img src="/src/assets/imgs/address/edit.png" alt="" @click="$router.push('/editaddress')" >
     </div>
 </template>
 
@@ -12,7 +12,6 @@
 export default {
     name: 'AddressItem',
     props: {
-        index: Number,
         address: Object,
     },
     data() {
