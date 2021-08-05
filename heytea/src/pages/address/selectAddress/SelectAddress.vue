@@ -6,14 +6,13 @@
         v-for="(address, index) in addressList"
         :key="address"
         :address="address"
-        :index="index"
          @click="selectAddr(index)"
          >
          </address-item>
         <button class="footer" @click="$router.push('/addaddress')">添加地址</button>
     </div>
 </template>
-./AddrItem.vue
+
 <script>
 import AddressItem from './addressItem/AddressItem.vue';
 import HeaderNav from '/src/components/HeaderNav.vue';
@@ -55,8 +54,7 @@ export default {
     min-height: 95%;
 }
 .isActive {
-    outline: rgba(0, 0, 0, 0.1) solid 3px;
-    background-color: orange;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
 }
 #selectAddress .footer {
     margin: 100px 10% 0;

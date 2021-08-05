@@ -33,9 +33,6 @@ export default {
       count: 1,
     };
   },
-  // beforeMount() {
-  //   console.log(this.food);
-  // },
   name: "mBan",
   methods: {
     closeFn() {
@@ -62,11 +59,12 @@ export default {
 
 <style scoped>
 .mBan {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 2;
   background-color: rgb(153, 152, 152);
   opacity: 0.3;
 }
@@ -74,9 +72,10 @@ export default {
   width: 300px;
   height: 600px;
   background-color: #fff;
-  position: absolute;
+  position: fixed;
+  z-index: 2;
   left: 50%;
-  top: 50%;
+  top: 55%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
 }

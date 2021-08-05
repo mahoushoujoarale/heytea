@@ -1,10 +1,8 @@
 <template>
   <div class="food">
     <food-top />
-    <food-items/>
-    <div class="food-content" :probe-type="3" ref="scroll">
-      <foods ref="foods" @addMban="add" />
-    </div>
+    <food-items class="fooditems"/>
+    <foods class="foods" @addMban="add" />
     <m-ban
       v-if="MbanShow"
       :food='food'
@@ -56,15 +54,11 @@ export default {
 
 <style scoped>
 .food {
-  width: 100%;
-}
-.food-content {
+  /* height: 100%; */
   position: absolute;
-  top: 115px;
+  top: 0;
   bottom: 50px;
-  left: 60px;
-  overflow: scroll;
-  margin: 5px;
-  margin-top: 0;
+  right: 0;
+  left: 0;
 }
 </style>

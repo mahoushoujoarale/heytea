@@ -3,13 +3,13 @@
     <div class="header"></div>
     <div :class="nav_header" v-if="nav_show">我的</div>
     <div class="focus">
-      <img src="./../../assets/imgs/mine/mine_focus.png" alt="">
+      <img src="/src/assets/imgs/mine/mine_focus.png" alt="">
     </div>
     <div class="info">
       <div class="left">
         <div class="hey">
           <div v-if="logged" class="logged">
-            <p>Hey,超级无敌大怪兽</p>
+            <p>Hey,{{user.username}}</p>
             <div>嘭，来杯灵感</div>
           </div>
           <div v-else class="unlogged"></div>
@@ -24,30 +24,30 @@
         </div>
       </div>
       <div class="right">
-        <img src="./../../assets/imgs/mine/mine_photo_logged.jpg" alt="" v-if="logged">
-        <img src="./../../assets/imgs/mine/mine_photo_unlogged.png" alt="" v-else>
+        <img :src="user.avatar" alt="" v-if="logged">
+        <img src="/src/assets/imgs/mine/mine_photo_unlogged.png" alt="" v-else>
       </div>
       <div class="bottom">
         <div class="item">
-          <img src="./../../assets/imgs/mine/mine_points.png" alt="">
+          <img src="/src/assets/imgs/mine/mine_points.png" alt="">
           <span v-if="logged">0</span>
           <span v-else>***</span>
           <div>积分商城</div>
         </div>
         <div class="item">
-          <img src="./../../assets/imgs/mine/mine_tickets.png" alt="">
+          <img src="/src/assets/imgs/mine/mine_tickets.png" alt="">
           <span v-if="logged">0</span>
           <span v-else>***</span>
           <div>喜茶券</div>
         </div>
         <div class="item">
-          <img src="./../../assets/imgs/mine/mine_wallet.png" alt="">
+          <img src="/src/assets/imgs/mine/mine_wallet.png" alt="">
           <span v-if="logged">0</span>
           <span v-else>***</span>
           <div>钱包</div>
         </div>
         <div class="item">
-          <img src="./../../assets/imgs/mine/mine_gift.png" alt="">
+          <img src="/src/assets/imgs/mine/mine_gift.png" alt="">
           <span v-if="logged">0</span>
           <span v-else>***</span>
           <div>阿喜有礼</div>
@@ -57,7 +57,7 @@
     <div class="news">
       <p class="title">星球播报</p>
       <div class="slider">
-        <img src="./../../assets/imgs/mine/mine_slider.png" alt="">
+        <img src="/src/assets/imgs/mine/mine_slider.png" alt="">
       </div>
       <div class="task">
         <div class="left">
@@ -65,7 +65,7 @@
           <div>MISSION CENTER</div>
         </div>
         <div class="right">
-          <img src="./../../assets/imgs/mine/mine_mission.png" alt="">
+          <img src="/src/assets/imgs/mine/mine_mission.png" alt="">
         </div>
       </div>
     </div>
@@ -89,6 +89,14 @@ export default {
   components: {
     Login
   },
+  beforeMount() {
+    setTimeout(() => {
+      if (this.$store.state.isLogin) {
+      this.user = this.$store.getters.getUser;
+      // console.log(this.user);
+    }
+    }, 0);
+  },
   data() {
     return {
       error: "",
@@ -102,7 +110,8 @@ export default {
         {choice: "联系客服", desc: ""},
         {choice: "消息中心", desc: ""},
         {choice: "更多", desc: ""}
-      ]
+      ],
+      user: {},
     }
   },
   methods: {

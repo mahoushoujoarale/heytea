@@ -15,8 +15,8 @@ const getters = {
     getUser(state) {
         return state.user;
     },
-    getPlace(state) {
-        return state.place;
+    getPlaceList(state) {
+        return state.placeList;
     },
     getStorage(state) {
         if (!state.token) 
@@ -28,6 +28,15 @@ const getters = {
     },
     getOrderNum(state) {
         return state.orderNum;
+    },
+    getClassNum(state) {
+        return state.classNum;
+    },
+    getScrollNum(state) {
+        return state.scrollNum;
+    },
+    getPlace(state) {
+        return state.place;
     }
 }
 

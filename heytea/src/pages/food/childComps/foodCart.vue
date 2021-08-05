@@ -66,10 +66,11 @@ export default {
       this.$store.getters.cartList[i].count++;
     },
     subFood(i) {
-      if(this.$store.getters.cartList[i].count>0){
+      if(this.$store.getters.cartList[i].count > 1){
         this.$store.getters.cartList[i].count--;
+      } else if (this.$store.getters.cartList[i].count === 1) {
+        this.$store.getters.cartList.splice(i, 1);
       }
-
     },
     isAllChange() {
       this.isAll = !this.isAll;
@@ -102,8 +103,6 @@ export default {
       let pri = 0;
       for (let item of this.$store.getters.cartList) {
         pri = pri + item.checked * item.count * item.info.price;
-        // console.log(item.count);
-        // console.log(item.info.price);
       }
       return pri;
     },
@@ -114,11 +113,12 @@ export default {
 
 <style scoped>
 .cart {
-  position: absolute;
+  position: fixed;
   bottom: 50px;
   left: 0;
   width: 100%;
   height: 50px;
+  z-index: 1;
   background-color: rgb(214, 205, 205);
 }
 .cart>p {

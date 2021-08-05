@@ -43,7 +43,7 @@ export default {
         },
         validatePhone() {
             // 验证手机号码
-            if (!/^1[345678]\d{9}$/.test(this.inputphone)) {
+            if (!/^1[3456789]\d{9}$/.test(this.inputphone)) {
                 this.bounceError("请填写合法的手机号");
                 return false;
             } else {

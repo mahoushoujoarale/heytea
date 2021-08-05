@@ -12,24 +12,15 @@ const mutations = {
         }
     },
     DELETECART(state) {
-        state.cartList = [];
+        state.cartList.length = 0;
     },
     LOGIN(state, value) {
         state.token = value;
         localStorage.setItem('token', value);
+        state.isLogin = true;
         axios.get('/user/info')
         .then((res) => {
-            state.user.info = res.data.data;
-            state.isLogin = true;
-            localStorage.setItem('info', state.user.info);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-        axios.get('/address/list')
-        .then((res) => {
-            state.user.address = res.data.data;
-            localStorage.setItem('address', state.user.address);
+            state.user = res.data.data;
         })
         .catch((err) => {
             console.log(err);
@@ -37,8 +28,6 @@ const mutations = {
     },
     LOGOUT(state) {
         localStorage.removeItem('token');
-        localStorage.removeItem('info');
-        localStorage.removeItem('address');
         state.user = {};
         state.isLogin = false;
     },
@@ -47,6 +36,15 @@ const mutations = {
     },
     SELECTORDERNUM(state, num) {
         state.orderNum = num;
+    },
+    SETCLASSNUM(state, index) {
+        state.classNum = index;
+    },
+    SETSCROLLNUM(state, index) {
+        state.scrollNum = index;
+    },
+    SETPLACE(state, place) {
+        state.place = place;
     }
 }
 

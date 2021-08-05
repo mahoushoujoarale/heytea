@@ -2,7 +2,7 @@
   <header-nav>商品结算</header-nav>
   <div id="pay">
     <div class="first">
-      <p>武汉K11 Select店 ></p>
+      <p>{{$store.getters.getPlace.name}} ></p>
       <div class="desc"><span></span>您距离当前门店1000米以上，请确认门店是否正确</div>
       <div class="contact">联系电话 13883488627 <span>自动填写</span></div>
     </div>
@@ -56,6 +56,7 @@ export default {
       cartList: [],
       toList:[],
       error: '',
+      addressID: "",
     }
   },
   beforeMount() {
@@ -78,9 +79,16 @@ export default {
           }, 2000);
       },
     pay() {
+      axios.get('/address/list')
+        .then((res) => {
+            this.addressID = res.data.data[this.$store.getters.getAddrNum].id;
+        })
+        .catch((err) => {
+            console.log(err);
+        })
       axios.post('/order/add', {
-        store: "武汉K11 Select店",
-        delId: this.$store.getters.getUser.address[this.$store.getters.getAddrNum].id,
+        store: this.$store.getters.getPlace.id,
+        delId: this.addressID,
         isTakeOut: true,
         products: this.toList
       })
