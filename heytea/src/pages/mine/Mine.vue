@@ -344,6 +344,7 @@ export default {
   border-bottom: 1px solid #e0dddd;
 }
 #mine .more .item {
+  clear: both;
   width: 100%;
   height: 70px;
   line-height: 70px;
@@ -351,7 +352,7 @@ export default {
 }
 #mine .more .item .left {
   float: left;
-  margin: 0 20px;
+  margin-left: 20px;
   color: #4C4C4C;
   font-size: 16px;
   font-weight: 500;
@@ -359,7 +360,7 @@ export default {
 #mine .more .item .right {
   float: right;
   font-size: 14px;
-  margin: 0 20px;
+  margin-right: 20px;
   color: #CFD0D2;
 }
 #mine .more .item .right span {
