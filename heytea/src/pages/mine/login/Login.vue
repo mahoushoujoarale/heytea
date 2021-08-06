@@ -10,8 +10,8 @@
                 </div>
             </div>
             <div class="login-box-buttons">
-                <router-link to="/forget" class="link">忘记密码</router-link>
-                <router-link to="/register" class="link">注册</router-link>
+                <router-link to="/forget" class="forget">忘记密码</router-link>
+                <router-link to="/register" class="register">注册</router-link>
                 <span class="login-btn-success" @click="success">确定</span>
                 <span class="login-btn-cancel" @click="cancel">取消</span>
             </div>
@@ -43,7 +43,9 @@ export default {
         },
         validatePhone() {
             // 验证手机号码
-            if (!/^1[3456789]\d{9}$/.test(this.inputphone)) {
+            if (this.inputphone === '') {
+                this.bounceError("请输入手机号");
+            } else if (!/^1[3456789]\d{9}$/.test(this.inputphone)) {
                 this.bounceError("请填写合法的手机号");
                 return false;
             } else {
@@ -139,13 +141,29 @@ export default {
     color: #333;
     font-size: 14px;
 }
-#login .login-box .login-box-buttons .link {
+#login .login-box .login-box-buttons {
+    display: flex;
+    align-items: center;
+    /* justify-items: center; */
+    /* align-content: space-around; */
+    justify-content: space-between;
+}
+#login .login-box .login-box-buttons .forget {
+    flex: 1;
     font-size: 14px;
     color: #48576a;
-    margin: 0 10px;
+    /* margin: 0 10px; */
+    text-decoration: none;
+}
+#login .login-box .login-box-buttons .register {
+    flex: 1;
+    font-size: 14px;
+    color: #48576a;
+    /* margin: 0 10px; */
     text-decoration: none;
 }
 #login .login-box .login-box-buttons .login-btn-success {
+    flex: 0;
     background: #20a0ff;
     border-color: #20a0ff;
     display: inline-block;
@@ -153,11 +171,12 @@ export default {
     white-space: nowrap;
     cursor: pointer;
     color: #fff;
-    margin: 0 5px 0 30px;
+    /* margin: 0 5px 0 30px; */
     padding: 10px 15px;
     border-radius: 4px;
 }
 #login .login-box .login-box-buttons .login-btn-cancel {
+    flex: 0;
     display: inline-block;
     line-height: 1;
     white-space: nowrap;
@@ -165,7 +184,7 @@ export default {
     background: #fff;
     border: 1px solid #c4c4c4;
     color: #1f2d3d;
-    margin: 0;
+    /* margin: 0; */
     padding: 10px 15px;
     border-radius: 4px;
 }

@@ -91,22 +91,26 @@ export default {
     Login
   },
   beforeMount() {
-    axios.get('/user/info')
-    .then((res) => {
-        this.user = res.data.data;
-    })
-    .catch((err) => {
-        console.log(err);
-    })
+    if (this.$store.state.isLogin) {
+      axios.get('/user/info')
+      .then((res) => {
+          this.user = res.data.data;
+      })
+      .catch((err) => {
+          console.log(err);
+      })
+    }
   },
   beforeUpdate() {
-    axios.get('/user/info')
-    .then((res) => {
-        this.user = res.data.data;
-    })
-    .catch((err) => {
-        console.log(err);
-    })
+    if (this.$store.state.isLogin) {
+      axios.get('/user/info')
+      .then((res) => {
+          this.user = res.data.data;
+      })
+      .catch((err) => {
+          console.log(err);
+      })
+    }
   },
   data() {
     return {
