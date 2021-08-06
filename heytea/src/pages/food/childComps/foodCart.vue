@@ -7,7 +7,7 @@
       @click="cartImgClick"
     />
     <p>￥{{ allPrice }}</p>
-    <div class="right" @click="$router.push('/orderpay')">结算</div>
+    <div class="right" @click="pay">结算</div>
     <div class="cartlists" v-show="isShow">
       <div class="top">
         <div class="t-left">
@@ -42,6 +42,9 @@
         </div>
       </div>
     </div>
+    <div class="bounced" v-if="error">
+      <div>{{ error }}</div>
+    </div>
   </div>
 </template>
 
@@ -55,9 +58,16 @@ export default {
     return {
       isShow: false,
       isAll: true,
+      error: '',
     };
   },
   methods: {
+    bounceError(msg) {
+      this.error = msg;
+      setTimeout(() => {
+          this.error = "";
+      }, 2000);
+    },
     cartImgClick() {
       this.isShow = !this.isShow;
       this.$emit("changeBgc");
@@ -90,6 +100,14 @@ export default {
     },
     clearAll() {
       this.$store.getters.cartList.length = 0;
+    },
+    pay() {
+      if (this.allPrice) {
+        this.$router.push('/orderpay');
+      }
+      else {
+        this.bounceError('请选择要结算的物品');
+      }
     }
   },
   computed: {
@@ -245,5 +263,20 @@ export default {
 }
 .foods-right .add {
   background-color: rgb(226, 128, 36);
+}
+.bounced {
+  position: relative;
+  width: 150px;
+  height: 35px;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+.bounced div {
+  line-height: 35px;
+  color: white;
+  text-align: center;
+  font-size: 12px;
 }
 </style>

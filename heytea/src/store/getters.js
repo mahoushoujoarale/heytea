@@ -12,9 +12,6 @@ const getters = {
         for (let item of state.cartList) sum += item.checked * item.count * item.info.price;
         return sum;
     },
-    getUser(state) {
-        return state.user;
-    },
     getPlaceList(state) {
         return state.placeList;
     },

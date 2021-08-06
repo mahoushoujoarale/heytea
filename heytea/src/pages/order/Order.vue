@@ -19,7 +19,7 @@
     <div class="unlogged" v-show="!$store.state.isLogin" @click="$router.push('/mine')"><div>请先登录</div></div>
     <div class="logged" v-show="$store.state.isLogin">
       <div v-if="order_active === 0" class="order-content">
-        <!-- <orderItem v-for="(item, index) in showList" :key="index" :food='item'  @click="toDetail(index)"></orderItem> -->
+        <orderItem v-for="(item, index) in showList" :key="index" :food='item'  @click="toDetail(index)"></orderItem>
       </div>
       <div v-if="order_active === 1" class="history-content">
         <orderItem v-for="(item, index) in showList" :key="index" :food='item'  @click="toDetail(index)"></orderItem>

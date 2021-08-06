@@ -14,7 +14,7 @@ const SelectAddress = () => import('/src/pages/address/selectAddress/SelectAddre
 const EditAddress = () => import('/src/pages/address/EditAddress.vue');
 const AddAddress = () => import('/src/pages/address/AddAddress.vue');
 const Place = () => import('/src/pages/place/Place.vue');
-const Charge = () => import('/src/pages/charge/Charge.vue');
+const Recharge = () => import('/src/pages/recharge/Recharge.vue');
 
 const routes = [
     {path: '/', redirect: '/home'},
@@ -31,14 +31,14 @@ const routes = [
     {path: '/editaddress', component: EditAddress},
     {path: '/addaddress', component: AddAddress},
     {path: '/place', component: Place},
-    {path: '/charge', component: Charge},
+    {path: '/recharge', component: Recharge},
 ];
 
 const router = createRouter({
     history: createWebHistory(),
     routes
 });
-const needLogin = ['/orderdetail', '/orderpay', '/selectaddress', '/editaddress', '/addaddress', '/charge'];
+const needLogin = ['/orderdetail', '/orderpay', '/selectaddress', '/editaddress', '/addaddress', '/recharge'];
 
 router.beforeEach((to, from, next) => {
     if (needLogin.includes(to.path) && !store.state.isLogin) {

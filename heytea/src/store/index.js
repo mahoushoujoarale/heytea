@@ -7,7 +7,6 @@ import axios from '/src/request/index.js';
 const state = {
     cartList: [],
     placeList: [],
-    user: {},
     token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
     isLogin: localStorage.getItem('token') ? true : false,
     addrNum: 0,
@@ -17,16 +16,6 @@ const state = {
     place: {},
 }
 setTimeout(() => {
-    if (state.isLogin) {
-        axios.get('/user/info')
-        .then((res) => {
-            state.user = res.data.data;
-            // console.log(state.user);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    }
     axios.get('./store/list')
     .then((res) => {
         state.placeList = res.data.data.store;

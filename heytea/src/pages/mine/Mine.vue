@@ -83,25 +83,37 @@
 </template>
 
 <script>
-import Login from './login/Login.vue'
+import Login from './login/Login.vue';
+import axios from "/src/request/index.js";
 export default {
   name: 'Mine',
   components: {
     Login
   },
   beforeMount() {
-    setTimeout(() => {
-      if (this.$store.state.isLogin) {
-      this.user = this.$store.getters.getUser;
-      // console.log(this.user);
-    }
-    }, 0);
+    axios.get('/user/info')
+    .then((res) => {
+        this.user = res.data.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+  },
+  beforeUpdate() {
+    axios.get('/user/info')
+    .then((res) => {
+        this.user = res.data.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
   },
   data() {
     return {
       error: "",
       nav_show: false,
       nav_header: "nav_header",
+      user: {},
       items: [
         {choice: "会员码", desc: "门店扫码积分、喜茶钱包和阿喜有礼支付"},
         {choice: "兑换中心", desc: "兑换星球会员、喜茶券和阿喜有礼"},
@@ -111,21 +123,27 @@ export default {
         {choice: "消息中心", desc: ""},
         {choice: "更多", desc: ""}
       ],
-      user: {},
     }
   },
   methods: {
+    bounceError(msg) {
+          this.error = msg;
+          setTimeout(() => {
+              this.error = "";
+          }, 2000);
+    },
     handleClick() {
       this.$refs.login.open();
     },
     logout() {
       this.$store.dispatch('logout');
+      this.bounceError('退出成功');
     }
   },
   computed: {
     logged() {
       return this.$store.state.isLogin;
-    }
+    },
   },
 }
 </script>

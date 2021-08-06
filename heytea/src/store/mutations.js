@@ -18,17 +18,9 @@ const mutations = {
         state.token = value;
         localStorage.setItem('token', value);
         state.isLogin = true;
-        axios.get('/user/info')
-        .then((res) => {
-            state.user = res.data.data;
-        })
-        .catch((err) => {
-            console.log(err);
-        })
     },
     LOGOUT(state) {
         localStorage.removeItem('token');
-        state.user = {};
         state.isLogin = false;
     },
     SELECTADDRNUM(state, num) {
