@@ -26,6 +26,8 @@ public class User implements Serializable {
     @TableField("username")
     private String username;
 
+    @TableField("alias")
+    private String alias;
 
     @JsonIgnore()
     @TableField("password")

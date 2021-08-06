@@ -58,4 +58,13 @@ public interface IUserService extends IService<User> {
      */
     Integer executeRecharge(String amount, String userName);
 
+    /**
+     * 更改昵称和头像
+     * @param userName
+     * @param newAvatar
+     * @param newAlias
+     * @return
+     */
+    boolean changeAliasAndAvatar(String userName, String newAvatar, String newAlias);
+
 }

@@ -43,6 +43,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
         // 否者，创建一个新增对象addUser依次设置字段值，然后插入表单
         User addUser = User.builder()
                 .username(dto.getName())
+                .alias(dto.getName())
                 .password(MD5Utils.getPwd(dto.getPass()))
                 .mobile(dto.getMobile())
                 .roleId(0)
@@ -119,5 +120,23 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper,User> implements IU
         Integer balance = user.getBalance() + Integer.parseInt(amount);
         baseMapper.updateBalance(balance,user.getId());
         return balance;
+    }
+
+    @Override
+    public boolean changeAliasAndAvatar(String userName, String newAvatar, String newAlias) {
+        User hasUser = baseMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getAlias, newAlias));
+        if (!ObjectUtils.isEmpty(hasUser))
+            return false;
+        User user = iUserService.getUserByUsername(userName);
+        if (ObjectUtils.isEmpty(newAvatar) && !ObjectUtils.isEmpty(newAlias))
+            user.setAlias(newAlias);
+        if (!ObjectUtils.isEmpty(newAvatar) && ObjectUtils.isEmpty(newAlias))
+            user.setAvatar(newAvatar);
+        if (!ObjectUtils.isEmpty(newAvatar) && !ObjectUtils.isEmpty(newAlias)){
+            user.setAvatar(newAvatar);
+            user.setAlias(newAlias);
+        }
+        baseMapper.updateById(user);
+        return true;
     }
 }

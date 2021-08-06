@@ -35,6 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private boolean isProtectedUrl(HttpServletRequest request) {
         List<String> protectedPaths = new ArrayList<>();
         protectedPaths.add("/user/info") ;  // 登录后获取用户信息
+        protectedPaths.add("/user/info/change");  //更改用户名和头像
         protectedPaths.add("/user/recharge");   // 充值
         protectedPaths.add("/address/add") ;  // 添加收货地址
         protectedPaths.add("/address/list") ;  // 用户全部收货地址

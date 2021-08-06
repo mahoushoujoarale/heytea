@@ -100,6 +100,22 @@ public class UserController {
     }
 
     /**
+     * 修改用户名和头像
+     * @param newAlias
+     * @param newAvatar
+     * @param userName
+     * @return
+     */
+    @RequestMapping(value = "/info/change",method = RequestMethod.PUT)
+    public ApiResult<User> changeInfo(@RequestParam("alias") String newAlias, @RequestParam("avatar") String newAvatar,@RequestHeader(value = JwtUtil.USER_NAME) String userName){
+        boolean isTrue = iUserService.changeAliasAndAvatar(userName,newAvatar,newAlias);
+        if (!isTrue)
+            return ApiResult.failed("用户名已存在");
+        User user = iUserService.getUserByUsername(userName);
+        return ApiResult.success(user,"修改成功");
+    }
+
+    /**
      * 发送短信验证码
      * @param desMobile
      * @return
