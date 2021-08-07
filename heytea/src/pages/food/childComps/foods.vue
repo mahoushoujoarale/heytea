@@ -54,7 +54,12 @@ export default {
         if (this.scrollHeight >= this.jumpList[this.jumpList.length - 1]) {
           this.scrollNum = this.jumpList.length - 1;
         }
-        this.$store.commit('SETSCROLLNUM', this.scrollNum);
+        setTimeout(() => {
+          let newHeight = document.documentElement.scrollTop || document.body.scrollTop;
+          if (newHeight === this.scrollHeight) {
+            this.$store.commit('SETSCROLLNUM', this.scrollNum);
+          }
+        }, 800);
       });
   },
   updated() {
